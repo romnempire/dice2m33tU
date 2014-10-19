@@ -16,7 +16,8 @@ $(function(){
 	var $blastField = $('#blast'),
 		$allPostsTextArea = $('#allPosts'),
 		$clearAllPosts = $('#clearAllPosts'),
-		$sendBlastButton = $('#send');
+		$sendBlastButton = $('#send'),
+		$mapField = $('#map');
 
 
 	//SOCKET STUFF
@@ -26,6 +27,12 @@ $(function(){
 		$allPostsTextArea.scrollTop($allPostsTextArea[0].scrollHeight - $allPostsTextArea.height());
 		//.css('scrollTop', $allPostsTextArea.css('scrollHeight'));
 
+	});
+
+	socket.on("onthemap", function(data){
+		var copy = $allPostsTextArea.html();
+		$allPostsTextArea.html('<p>'+ copy + data.y + data.x + "</p>" );
+		$allPostsTextArea.scrollTop($allPostsTextArea[0].scrollHeight - $allPostsTextArea.height());
 	});
 	
 	$clearAllPosts.click(function(e){
@@ -49,6 +56,13 @@ $(function(){
 	    if(e.keyCode == 13){
 	        $sendBlastButton.trigger('click');//lazy, but works
 	    }
-	})
+	});
+
+	$mapField.click(function(e){
+		socket.emit("onthemap", {x:e.pageX, y:e.pageY},	
+			function(data){
+					$blastField.val('');
+				});
+	});
 	
 });

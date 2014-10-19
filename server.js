@@ -51,6 +51,13 @@ io.sockets.on('connection', function (socket) {
 		fn();//call the client back to clear out the field
 	});
 
+	socket.on('onthemap', function(data, fn){
+		console.log(data);
+		io.sockets.emit('onthemap', data);
+
+		fn();//call the client back to clear out the field
+	});
+
 });
 
 
