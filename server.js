@@ -35,6 +35,10 @@ app.use(function(req, res, next){
 	next();
 });
 
+app.get("/example", function(req, res){
+	res.render('example', {});
+});
+
 app.get("/", function(req, res){
 	res.render('index', {});
 });

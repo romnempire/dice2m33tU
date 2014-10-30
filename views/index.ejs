@@ -1,87 +1,63 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset = "UTF-8">
         <title>dice2m33tU</title>
         <meta name="description" content="A minimalist virtual online gaming table.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/core.css">
-
-        <style>
-
-        	input:focus,
-			select:focus,
-			textarea:focus,
-			button:focus {
-			    outline: none !important;
-			}
-
-        	#allPosts {
-			    resize: none;
-			    font-size: 12px;
-			    border-radius: 5px;
-			    border: #ccc solid 1px;
-			    line-height: 14px;
-			    height:100px;
-			    overflow: scroll;
-			}
-
-			p{
-		    	margin:0;
-		    	padding:0;
-		    }
-
-		</style>
+        <link rel="stylesheet" type="text/css" href="css/core.css">
     </head>
+
     <body>
+        <div id="top">
+        <div id="title">Dungeons and Dragons</div>
+        <div id="toplinks">
+        <center>
+        <a href="http://www.cs.unc.edu/Courses/comp426-f14/amrobers/a3/index.html"><div class="toplinks"><br>home</div></a>
+        <a href="http://www.cs.unc.edu/Courses/comp426-f14/amrobers/a3/index.html#about"><div class="toplinks"><br>about</div></a>
+        <a href="http://www.cs.unc.edu/Courses/comp426-f14/amrobers/a3/index.html#contact"><div class="toplinks"><br>more</div></a>
+        </center>
+        </div>
+        </div>
+        
+        <div id="container">
+            <div id="map">
+                <div id="toybox"><h2>toybox</h2>
+                Items the player collects from the map can go here
+                </div>
+                <div id="dice">
+                    <img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px">
+                </div>
+            
+                <div id="options">
+                    <button type="button" onclick="alert('99 problems but yo health aint one')">Health</button>
+                    <button type="button" onclick="alert('there will be an option here')">Hello</button>
+                    <button type="button" onclick="alert('I like food')">Food</button>
+                </div>
+            </div>
 
-	<!--[if lt IE 8]>
-		<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-	<![endif]-->
+            <div id="chat">
+                <div id="allPosts" class="form-control">
+                </div>
 
-    <div class="container">
-    	<div class="jumbotron">
-        	<h1>dice2m33tU</h1>
-       		<p>A minimalist virtual online gaming table.</p>
-       		<div class="row">
-       			<div class="col-md-4 col-sm-6 col-xs-6">
-       				<h3>All Chatter<button id="clearAllPosts" type="button" class="btn btn-danger btn-xs pull-right">clear</button></h3>
-       				<div id="allPosts" class="form-control"></div>
-				    <div class="input-group">
-						<input id="blast" type="text" class="form-control" placeholder="send something to everyone">
-						<span class="input-group-btn">
-							<button id="send" class="btn btn-success" type="button">Send</button>
-						</span>
-				    </div><!-- /input-group -->
-       			</div>
-       		</div>
-		</div>
-	</div>
+                <div class="input-group" id="chatinput">
+                    <input id="blast" type="text" class="form-control" placeholder="send something to everyone" name="chatinput">
+                    <span class="input-group-btn">
+                        <button id="send" class="btn btn-success" type="button">Send</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+        </div>
 
-    <div id="map">
-        holla holla make some noize
-    </div>
-    
-    <!-- jQuery --> 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="public/bower_components/jQuery/jquery.min.js"><\/script>')</script>
+        <!-- jQuery --> 
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="public/bower_components/jQuery/jquery.min.js"><\/script>')</script>
 
-    <!-- socket.io -->
-    <script src="/socket.io/socket.io.js"></script>
+        <!-- socket.io -->
+        <script src="/socket.io/socket.io.js"></script>
 
-	<!-- APP CODE -->
-	<script src="js/app.min.js"></script>
-
-	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-        e.src='//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create','UA-XXXXX-X');ga('send','pageview');
-    </script>
+        <!-- APP CODE -->
+        <script src="js/app.min.js"></script>
     </body>
 </html>
