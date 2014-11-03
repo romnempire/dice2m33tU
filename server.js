@@ -11,7 +11,8 @@ var server = require('http').createServer(app)
 var io = require('socket.io').listen(server);
 var device  = require('express-device');
 
-var runningPortNumber = process.env.OPENSHIFT_NODEJS_PORT;
+//var runningPortNumber = process.env.OPENSHIFT_NODEJS_PORT;
+var runningPortNumber = 8080;
 
 app.configure(function(){
 	// I need to access everything in '/public' directly
