@@ -11,12 +11,13 @@ var server = require('http').createServer(app)
 var io = require('socket.io').listen(server);
 var device  = require('express-device');
 
-console.log("hi");
+console.log("hi1");
 var runningPortNumber = process.env.OPENSHIFT_NODEJS_PORT;
 console.log(process.env.OPENSHIFT_NODEJS_PORT);
 //var runningPortNumber = 8080;
 
 app.configure(function(){
+	console.log("hi2");
 	// I need to access everything in '/public' directly
 	app.use(express.static(__dirname + '/public'));
 
@@ -30,6 +31,7 @@ app.configure(function(){
 
 // logs every request
 app.use(function(req, res, next){
+	console.log("hi6");
 	// output every request in the array
 	console.log({method:req.method, url: req.url, device: req.device});
 
@@ -38,15 +40,18 @@ app.use(function(req, res, next){
 });
 
 app.get("/example", function(req, res){
+	console.log("hi3");
 	res.render('example', {});
 });
 
 app.get("/", function(req, res){
+		console.log("hi3");
 	res.render('index', {});
 });
 
 
 io.sockets.on('connection', function (socket) {
+		console.log("hi4");
 
 	io.sockets.emit('blast', {msg:"<span style=\"color:red !important\">someone connected</span>"});
 
@@ -68,4 +73,5 @@ io.sockets.on('connection', function (socket) {
 
 
 server.listen(runningPortNumber);
+console.log("hi5");
 
