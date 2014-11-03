@@ -11,7 +11,9 @@ var server = require('http').createServer(app)
 var io = require('socket.io').listen(server);
 var device  = require('express-device');
 
+console.log("hi");
 var runningPortNumber = process.env.OPENSHIFT_NODEJS_PORT;
+console.log(process.env.OPENSHIFT_NODEJS_PORT);
 //var runningPortNumber = 8080;
 
 app.configure(function(){
