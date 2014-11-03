@@ -72,6 +72,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 
-server.listen(runningPortNumber);
+server.listen(runningPortNumber, OPENSHIFT_NODEJS_IP);
 console.log("hi5");
 
