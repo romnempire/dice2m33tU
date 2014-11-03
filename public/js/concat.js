@@ -1,5 +1,5 @@
 // connect to our socket server
-var socket = io.connect('http://dice2m33tu2-romnempire.rhcloud.com/');
+var socket = io.connect('http://dice2m33tu-romnempire.rhcloud.com/');
 
 var app = app || {};
 
