@@ -89,6 +89,7 @@ button:hover {
 }
 
 #map {
+	z-index: 0;
 	left: 2%;
 	width: 70%;
 	height: 100%;
@@ -160,6 +161,10 @@ button:hover {
 	color: #fff;
 }
 
+.vertical-slider {
+	
+}
+
 #chat {
 	right: 2%;
 	width: 25%;
@@ -170,7 +175,7 @@ button:hover {
 	background: #DAC1AF;
 	padding-left: 4px;
 	padding-right: 4px;
-
+	overflow: scroll;
 }
 
 #chatinput {
@@ -184,6 +189,26 @@ button:hover {
 	bottom: 1%;
 	left: 2%;
 	position: absolute;
+	z-index: 30;
+}
+#dice div {
+	display: inline-block;
+}
+
+#slider {
+	bottom: 1%;
+	left: 2%;
+	position: relative;
+	display: none;
+}
+
+#slider > ul {
+	display: inline;
+	position: relative;
+}
+
+#slider > ul:nth-child(2) {
+	display: none;
 }
 
 #dice:hover {
@@ -209,4 +234,13 @@ button:hover {
 
 #oldchat {
 
+}
+
+#statbox {
+	background: #666;
+	padding-left: 4px;
+	padding-right: 4px;
+	border: solid 1px #000;
+	width: 15%;
+	height: 20%;
 }

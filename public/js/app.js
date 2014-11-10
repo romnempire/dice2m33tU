@@ -18,6 +18,10 @@ $(function(){
 		$clearAllPosts = $('#clearAllPosts'),
 		$sendBlastButton = $('#send'),
 		$mapField = $('#map');
+		$options = $('#options');
+		
+		addActionHandler(); // to dice
+		$('#slider').hide();
 
 
 	//SOCKET STUFF
@@ -59,10 +63,60 @@ $(function(){
 	});
 
 	$mapField.click(function(e){
-		socket.emit("onthemap", {x:e.pageX, y:e.pageY},	
-			function(data){
+		var target = e.target;
+		if (target.id = '#options') {
+			return true;
+		} else {
+			socket.emit("onthemap", {x:e.pageX, y:e.pageY},	
+				function(data){
 					$blastField.val('');
 				});
+		}
 	});
 	
 });
+
+
+function showStats(e) {
+	//var $player = e.target;
+	//make statbox visible in clicked area	
+}
+
+// animates dice to slide left/right when clicked
+function addActionHandler() {
+	var isDiceBarVisible = false;
+	$('#icon').click( function() {
+		if (isDiceBarVisible) {
+			$('#slider').hide();
+		}
+		else {
+			$('#slider').show();
+		}
+		isDiceBarVisible = !isDiceBarVisible;
+	});
+	var lastOpen;
+	$('#slider > div > img').click(function() {
+		var options = $(this).next('ul');
+		if (!options.length)
+			return;
+		if (lastOpen) {
+			// if the options are already shown
+			if (lastOpen.hasClass('open') && $(this).hasClass('open')) {
+				options.fadeIn();
+				$(this).removeClass('open');
+				lastOpen = null;
+			} else { // if this is a different dice option than already showing
+				lastOpen.find('ul').fadeOut();
+				lastOpen.removeClass('open');
+				options.fadeIn();
+				$(this).addClass('open');
+				lastOpen = $(this);
+			}
+		} else {
+			options.fadeIn();
+			$(this).addClass('open');
+			lastOpen = $(this);
+		}
+		return false;
+	});
+}
