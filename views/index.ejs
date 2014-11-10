@@ -23,6 +23,8 @@
         
         <div id="container">
             <div id="map">
+                <div id="grid">
+                </div>
                 <div id="toybox"><h2>toybox</h2>
                
                 </div>
@@ -32,7 +34,7 @@
             
                 <div id="options">
                     <button type="button" onclick="createURLChooser(this)">Add Toy</button>
-                    <button type="button" onclick="alert('there will be an option here')">Hello</button>
+                    <button type="button" onclick="$('.griddy').toggle();return false;">Grid</button>
                     <button type="button" onclick="alert('I like food')">Food</button>
                 </div>
             </div>
@@ -62,7 +64,11 @@
         <!-- APP CODE -->
         <!--for devt purposes you might want to refer to the unminifieds.
         it lets the node server serve you your updated code without running grunt-->
+        <!--
         <script src="js/app.min.js"></script>
         <script src="js/map.min.js"></script>
+        <script src="js/griddy.js"></script>
+        -->
+        <script src="js/concat.min.js"></script>
     </body>
 </html>
