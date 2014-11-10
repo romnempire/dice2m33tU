@@ -24,14 +24,14 @@
         <div id="container">
             <div id="map">
                 <div id="toybox"><h2>toybox</h2>
-                Items the player collects from the map can go here
+               
                 </div>
                 <div id="dice">
                     <img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px">
                 </div>
             
                 <div id="options">
-                    <button type="button" onclick="alert('99 problems but yo health aint one')">Health</button>
+                    <button type="button" onclick="createURLChooser(this)">Add Toy</button>
                     <button type="button" onclick="alert('there will be an option here')">Hello</button>
                     <button type="button" onclick="alert('I like food')">Food</button>
                 </div>
@@ -52,12 +52,17 @@
 
         <!-- jQuery --> 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="public/bower_components/jQuery/jquery.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="public/bower_components/jquery/jquery.min.js"><\/script>')</script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        <script>window.jQuery.ui || document.write('<script src="public/bower_components/jquery-ui/jquery-ui.min.js"><\/script>')</script>
 
         <!-- socket.io -->
         <script src="/socket.io/socket.io.js"></script>
 
         <!-- APP CODE -->
+        <!--for devt purposes you might want to refer to the unminifieds.
+        it lets the node server serve you your updated code without running grunt-->
         <script src="js/app.min.js"></script>
+        <script src="js/map.min.js"></script>
     </body>
 </html>

@@ -1,65 +1,4 @@
-// connect to our socket server
-var socket = io.connect('http://dice2m33tu-romnempire.rhcloud.com/');
-
-var app = app || {};
-
-
-// shortcut for document.ready
-$(function(){
-	//setup some common vars
-	var $blastField = $('#blast'),
-		$allPostsTextArea = $('#allPosts'),
-		$clearAllPosts = $('#clearAllPosts'),
-		$sendBlastButton = $('#send'),
-		$mapField = $('#map');
-
-
-	//SOCKET STUFF
-	socket.on("blast", function(data){
-		var copy = $allPostsTextArea.html();
-		$allPostsTextArea.html('<p>' + copy + data.msg + "</p>");
-		$allPostsTextArea.scrollTop($allPostsTextArea[0].scrollHeight - $allPostsTextArea.height());
-		//.css('scrollTop', $allPostsTextArea.css('scrollHeight'));
-
-	});
-
-	socket.on("onthemap", function(data){
-		var copy = $allPostsTextArea.html();
-		$allPostsTextArea.html('<p>'+ copy + data.y + data.x + "</p>" );
-		$allPostsTextArea.scrollTop($allPostsTextArea[0].scrollHeight - $allPostsTextArea.height());
-	});
-	
-	$clearAllPosts.click(function(e){
-		$allPostsTextArea.text('');
-	});
-
-	$sendBlastButton.click(function(e){
-
-		var blast = $blastField.val();
-		if(blast.length){
-			socket.emit("blast", {msg:blast}, 
-				function(data){
-					$blastField.val('');
-				});
-		}
-
-
-	});
-
-	$blastField.keydown(function (e){
-	    if(e.keyCode == 13){
-	        $sendBlastButton.trigger('click');//lazy, but works
-	    }
-	});
-
-	$mapField.click(function(e){
-		socket.emit("onthemap", {x:e.pageX, y:e.pageY},	
-			function(data){
-					$blastField.val('');
-				});
-	});
-	
-});;function dropInImage(url) {
+function dropInImage(url) {
     $('#map').append('<img src=' + url + ' class="toy draggable">');
     $('.draggable').draggable({ containment: 'parent', start: handleDragStart,
         stop: handleDragStop, drag: handleDragDrag });
@@ -127,4 +66,3 @@ function handleDragStop( e, ui ) {
 
 $( '#map, #toybox' ).droppable({ accept: ".toy", drop: handleDropEvent });
 $( '#toybox').draggable( {containment: 'parent'});
-
