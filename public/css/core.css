@@ -88,45 +88,6 @@ button:hover {
 	position: absolute;
 }
 
-#map {
-	left: 2%;
-	width: 70%;
-	height: 100%;
-	float: bottom left;
-	border: solid 1px #000;
-	position: absolute;
-	overflow: hidden;
-	background: url("http://pctalk.info/Games/Sacred2/Wolfes.Lair/Sacred2FallenAngel/S2FAMisc/Maps/WorldMap.jpg");
-	background-position: 25% 25%;
-	
-}
-
-.toy {
-    max-width: 100px;
-    z-index: 2;
-}
-
-#toybox {
-	/*float: right; */
-	top: 0%;
-	right: 0%;
-	border: solid 1px #000;
-	background: #666;
-	width: 20%;
-	height: 60%;
-	position: absolute;
-	opacity: .65;
-	padding: 2px;
-	z-index: 2;
-}
-
-#toybox:hover {
-	transition: all .3s ease-in-out;
-	opacity: .95;
-	border-color: #fff;
-	
-}
-
 #toplinks {
 	top: 5%;
 	right: 2%;
@@ -217,4 +178,43 @@ button:hover {
 
 #oldchat {
 
+}
+
+/*map*/
+
+#map {
+	left: 2%;
+	width: 70%;
+	height: 100%;
+	float: bottom left;
+	border: solid 1px #000;
+	position: absolute;
+	overflow: hidden;
+	background: url("http://pctalk.info/Games/Sacred2/Wolfes.Lair/Sacred2FallenAngel/S2FAMisc/Maps/WorldMap.jpg");
+	background-position: 25% 25%;
+}
+
+.toy {
+    max-width: 100px;
+    z-index: 2;
+}
+
+#toybox {
+	/*float: right; */
+	top: 0%;
+	right: 0%;
+	border: solid 1px #000;
+	background: #666;
+	width: 20%;
+	height: 60%;
+	position: absolute;
+	opacity: .65;
+	padding: 2px;
+	z-index: 2;
+}
+
+#toybox:hover {
+	transition: all .3s ease-in-out;
+	opacity: .95;
+	border-color: #fff;
 }
