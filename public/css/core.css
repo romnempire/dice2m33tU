@@ -107,7 +107,7 @@ button:hover {
 }
 
 #toybox {
-	float: right; 
+	/*float: right; */
 	top: 0%;
 	right: 0%;
 	border: solid 1px #000;
@@ -117,7 +117,7 @@ button:hover {
 	position: absolute;
 	opacity: .65;
 	padding: 2px;
-	z-index: 3;
+	z-index: 2;
 }
 
 #toybox:hover {
