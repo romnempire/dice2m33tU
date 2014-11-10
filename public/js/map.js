@@ -66,4 +66,3 @@ function handleDragStop( e, ui ) {
 
 $( '#map, #toybox' ).droppable({ accept: ".toy", drop: handleDropEvent });
 $( '#toybox').draggable( {containment: 'parent'});
-

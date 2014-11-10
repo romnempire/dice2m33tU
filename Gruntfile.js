@@ -65,7 +65,7 @@ module.exports = function (grunt) {
         stripBanners:true
       },
       dist: {
-        src: ['public/js/app.js'],
+        src: ['public/js/app.js', 'public/js/map.js'],
         dest: 'public/js/concat.js',
       },
     },
@@ -92,7 +92,8 @@ module.exports = function (grunt) {
       },
       my_target: {
         files: {
-          'public/js/app.min.js': ['public/js/concat.js']
+          'public/js/app.min.js': ['public/js/concat.js'],
+          'public/js/map.min.js': ['public/js/concat.js']
         }
       }
     },
