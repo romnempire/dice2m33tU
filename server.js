@@ -50,7 +50,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('blast', function(data, fn){
 		console.log(data);
-		io.sockets.emit('blast', {msg:data.msg});
+		io.sockets.emit('blast', {msg:"<span class=\"user\" style=\"font-weight:bold !important\">You: </span>" + data.msg});
 
 		fn();//call the client back to clear out the field
 	});

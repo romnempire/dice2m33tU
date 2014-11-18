@@ -49,7 +49,6 @@ $(function(){
 				});
 		}
 
-
 	});
 
 	$blastField.keydown(function (e){
@@ -64,5 +63,5 @@ $(function(){
 					$blastField.val('');
 				});
 	});
-	
+
 });

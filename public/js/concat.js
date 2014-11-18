@@ -43,7 +43,6 @@ $(function(){
 				});
 		}
 
-
 	});
 
 	$blastField.keydown(function (e){
@@ -58,7 +57,7 @@ $(function(){
 					$blastField.val('');
 				});
 	});
-	
+
 });;function dropInImage(url) {
     $('#map').append('<img src=' + url + ' class="toy draggable">');
     $('.draggable').draggable({ containment: 'parent', start: handleDragStart,

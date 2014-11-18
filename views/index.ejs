@@ -29,13 +29,39 @@
                
                 </div>
                 <div id="dice">
-                    <img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px">
+                	<a href="#show">
+                    	<img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px">
+                    </a>
                 </div>
+                <div id="empty">
+                	<a name="close">
+						<div id="hide"></div>
+					</a>
+					<a name="show"></a>
+					<div id="appear">
+						<a name="show"></a>
+						<a href="#d1s"><img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px"></a><a href="#close">(close)</a>
+					</div>
+				</div>
+				<div id="d1">
+					<a name="d1close"><div id="d1hide"></div></a>
+					<a name="d1s">
+						<div id="d1show"><img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px"><br><br><a href="#d1close">
+								(close)</a>
+						</div>
+					</a>
+				</div>
+                <div id="statscontainer">
+					<a name="statsclose"><div id="statshide"></div></a>
+					<a name="showstats"><div id="stats">stats here!!!
+						<br><br><br><a href="#statsclose">(close)</a>
+					</div></a>
+				</div>
             
                 <div id="options">
                     <button type="button" onclick="createURLChooser(this)">Add Toy</button>
                     <button type="button" onclick="$('.griddy').toggle();return false;">Grid</button>
-                    <button type="button" onclick="alert('I like food')">Food</button>
+                    <button type="button" onclick="alert('I like food')">Stats</button>
                 </div>
             </div>
 
