@@ -8,6 +8,12 @@
 // if id exists, findByID returns the Message object
 // public static function findByID($mid);
 //
+// findBySession returns an associative array
+// public static function findBySession($session);
+//
+// findByUser returns an associative array
+// public static function findByUser($user);
+//
 // private constructor, called when row can be inserted
 // private function __construct($mid, $session, $timestamp, $text, $user);
 //
@@ -20,13 +26,6 @@
 // public function getText();
 //
 // public function getUser();
-//
-// public function setTimestamp($time);
-//
-// public function setText($text);
-//
-// update is called inside setters
-// public function update();
 //
 // public function delete();
 
@@ -72,6 +71,20 @@ class Message {
 		return null;
 	}
 	
+	public static function findBySession($session) {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session);
+		
+		return $result->fetch_all();
+	}
+	
+	public static function findByUser($user) {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user);
+		
+		return $result->fetch_all();
+	}
+	
 	private function __construct($mid, $session, $timestamp, $text, $user) {
 		$this->name = $mid;
 		$this->session = $session;
@@ -98,24 +111,6 @@ class Message {
 	
 	public function getUser() {
 		return $this->user;
-	}
-		
-	public function setTimestamp($time) {
-		$this->timestamp = $time;
-		
-		return $this->update();
-	}
-	
-	public function setText($text) {
-		 $this->text = $text;
-		 
-		 return $this->update();
-	}
-	
-	public function update() {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("UPDATE a6_Message SET timestamp = ". $this->timestamp . ", text = " . $this->text . " WHERE mid = " . $this->mid);
-		return $result;
 	}
 	
 	public function delete() {

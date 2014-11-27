@@ -8,6 +8,18 @@
 // if image exists, findByImage returns the Piece object
 // public static function findByImage($image);
 //
+// getAllPieces returns an associative array
+// public static function getAllPieces();
+//
+// findBySession returns an associative array
+// public static function findBySession($session);
+//
+// findByBoard returns an associative array
+// public static function findByBoard($board);
+//
+// findByLocation returns an associative array
+// public static function findByLocation($locationX, $locationY);
+//
 // private constructor, called when row can be inserted
 // private function __construct($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
 //
@@ -74,6 +86,34 @@ class Piece {
 							 );
 		}
 		return null;
+	}
+	
+	public static function getAllPieces() {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Piece ORDER BY image");
+		
+		return $result->fetch_all(MYSQLI_ASSOC);
+	}
+	
+	public static function findBySession($session) {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE session = " . $session);
+		
+		return $result->fetch_all();
+	}
+	
+	public static function findByBoard($board) {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE board = " . $board);
+		
+		return $result->fetch_all();
+	}
+	
+	public static function findByLocation($locationX, $locationY) {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE locationX = " . $locationX . " AND locationY = " . $locationY);
+		
+		return $result->fetch_all();
 	}
 	
 	private function __construct($name, $session, $locationX, $locationY, $sizeX, $sizeY) {

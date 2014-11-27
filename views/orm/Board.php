@@ -8,6 +8,12 @@
 // if id exists, findById returns the Board object
 // public static function findByID($id);
 //
+// getAllBoards returns an associative array
+// public static function getAllBoards();
+//
+// findBySession returns an associative array
+// public static function findBySession($session);
+//
 // private constructor, called when row can be inserted
 // private function __construct($bid, $session, $background, $length, $width);
 //
@@ -70,6 +76,20 @@ class Board {
 							 );
 		}
 		return null;
+	}
+	
+	public static function getAllBoards() {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Board ORDER BY bid");
+		
+		return $result->fetch_all(MYSQLI_ASSOC);
+	}
+	
+	public static function getBySession($session) {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Board WHERE session = " . $session);
+		
+		return $result->fetch_all();
 	}
 	
 	private function __construct($bid, $session, $background, $length, $width) {

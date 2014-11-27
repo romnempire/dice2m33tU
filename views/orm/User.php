@@ -8,6 +8,12 @@
 // if name exists, findByName returns the User object
 // public static function findByName($name);
 //
+// getAllUsers returns an associative array
+// public function getAllUsers();
+//
+// findBySession returns an associative array
+// public function findBySession($session);
+//
 // private constructor, called when row can be inserted
 // private function __construct($name, $session);
 //
@@ -46,6 +52,20 @@ class User {
 							);
 		}
 		return null;
+	}
+	
+	public static function getAllUsers() {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_User ORDER BY name");
+		
+		return $result->fetch_all(MYSQLI_ASSOC);
+	}
+	
+	public static function getBySession($session) {
+		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_User WHERE session = " . $session);
+		
+		return $result->fetch_all();
 	}
 	
 	private function __construct($name, $session) {
