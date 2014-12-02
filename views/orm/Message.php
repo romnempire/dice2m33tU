@@ -8,10 +8,10 @@
 // if id exists, findByID returns the Message object
 // public static function findByID($mid);
 //
-// findBySession returns an associative array
+// findBySession returns an array
 // public static function findBySession($session);
 //
-// findByUser returns an associative array
+// findByUser returns an array
 // public static function findByUser($user);
 //
 // private constructor, called when row can be inserted
@@ -75,14 +75,26 @@ class Message {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session);
 		
-		return $result->fetch_all();
+		$all = $result->fetch_all();
+		$messages = array();
+		for ($index = 0; $index < sizeof($all); $index++) {
+			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
+		}
+		
+		return $messages;	
 	}
 	
 	public static function findByUser($user) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user);
 		
-		return $result->fetch_all();
+		return $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+		$messages = array();
+		for ($index = 0; $index < sizeof($all); $index++) {
+			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
+		}
+		
+		return $messages;	
 	}
 	
 	private function __construct($mid, $session, $timestamp, $text, $user) {

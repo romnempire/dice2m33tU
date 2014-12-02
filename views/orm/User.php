@@ -8,10 +8,10 @@
 // if name exists, findByName returns the User object
 // public static function findByName($name);
 //
-// getAllUsers returns an associative array
+// getAllUsers returns an array
 // public function getAllUsers();
 //
-// findBySession returns an associative array
+// findBySession returns an array
 // public function findBySession($session);
 //
 // private constructor, called when row can be inserted
@@ -58,14 +58,26 @@ class User {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_User ORDER BY name");
 		
-		return $result->fetch_all(MYSQLI_ASSOC);
+		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM]);
+		$users = array();
+		for ($index = 0; $index < sizeof($all); $index++) {
+			$users[$index] = new User($all[$index]['name'],$all[$index]['session']);
+		}
+		
+		return $users;		
 	}
 	
 	public static function getBySession($session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_User WHERE session = " . $session);
 		
-		return $result->fetch_all();
+		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM]);
+		$users = array();
+		for ($index = 0; $index < sizeof($all); $index++) {
+			$users[$index] = new User($all[$index]['name'],$all[$index]['session']);
+		}
+		
+		return $users;	
 	}
 	
 	private function __construct($name, $session) {
