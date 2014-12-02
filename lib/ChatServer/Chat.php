@@ -17,7 +17,7 @@ class Chat implements MessageComponentInterface {
 
         echo "New connection! ({$conn->resourceId})\n";
 
-        $this->dumpChatBacklog($conn);
+        // $this->dumpChatBacklog($conn);
         // $this->newDumpChatBacklog($conn);
     }
 
