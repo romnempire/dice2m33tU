@@ -2,7 +2,7 @@
 namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-require 'lib/orm/Message.php';
+// require 'lib/orm/Message.php';
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -17,8 +17,8 @@ class Chat implements MessageComponentInterface {
 
         echo "New connection! ({$conn->resourceId})\n";
 
-        // $this->dumpChatBacklog($conn);
-        $this->newDumpChatBacklog($conn);
+        $this->dumpChatBacklog($conn);
+        // $this->newDumpChatBacklog($conn);
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
@@ -70,15 +70,15 @@ class Chat implements MessageComponentInterface {
 
     }
 
-    public function newDumpChatBacklog(ConnectionInterface $conn) {
-      $messages = Message::findBySession("pets");
+   // public function newDumpChatBacklog(ConnectionInterface $conn) {
+   //   $messages = Message::findBySession("pets");
 
-      foreach($messsages as $message) {
-        $data = array("cmdType" => "message",
-                      "timestamp" => $message.timestamp,
-                      "text" => $message.text,
-                      "user" => $message.user);
-        $conn->send(json_encode($data));
-      }
-    }
+   //   foreach($messsages as $message) {
+   //     $data = array("cmdType" => "message",
+   //                   "timestamp" => $message.timestamp,
+   //                   "text" => $message.text,
+   //                   "user" => $message.user);
+   //     $conn->send(json_encode($data));
+   //   }
+   // }
 }
