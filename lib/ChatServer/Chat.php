@@ -36,7 +36,9 @@ class Chat implements MessageComponentInterface {
             }
         } else if ($jsonmsg->cmdType == 'backlog') {
             $this->dumpChatBacklog($from);
-        } 
+        } else if ($jsonmsg->cmdType == 'diceroll') {
+            $this->rollDice($from, $jsonmsg);
+        }
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -86,5 +88,9 @@ class Chat implements MessageComponentInterface {
    //     $conn->send(json_encode($data));
    //   }
    // }
+
+    public function rollDice(ConnectionInterface $conn, $msg) {
+        console.log('diceroll');
+    }
 }
 

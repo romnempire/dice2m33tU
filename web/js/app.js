@@ -55,7 +55,7 @@ function login(user, session) {
     session.user = user;
     session.session = session;
     $('#login').css({visibility:'hidden'});
-    var backlogreq = {'cmdType': backlog,
+    var backlogreq = {'cmdType': 'backlog',
                       'session': session.session,
                       'user': session.user
                      };
