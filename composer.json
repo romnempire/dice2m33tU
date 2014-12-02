@@ -1,9 +1,9 @@
 {
-	"autoload": {
-		"psr-0": {
-			"MyApp": "src"
-		}
-	},
+    "autoload": {
+        "psr-0": {
+            "ChatServer": "lib"
+        }
+    },
     "require": {
         "cboden/ratchet": "0.3.*"
     }
