@@ -74,7 +74,19 @@
                     <span class="input-group-btn">
                         <button id="send" class="btn btn-success" type="button">Send</button>
                     </span>
-                </div><!-- /input-group -->
+                </div>
+                <div id="login">
+                    <form id="loginform">
+                    <input type="text" name="name">Name
+                    <br>
+                    <input type="text" name="session">Session
+                        <button type="button"
+                        onclick="login(
+                        document.forms['loginform'].elements['name'].value,
+                        document.forms['loginform'].elements['session'].value
+                        );">Login</button>
+                    </form>
+                </div>
             </div>
         </div>
 

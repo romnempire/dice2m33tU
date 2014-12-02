@@ -22,16 +22,21 @@ class Chat implements MessageComponentInterface {
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+        $jsonmsg = json_decode($msg);
+        if ($jsonmsg->cmdType == 'message') {
+            $numRecv = count($this->clients) - 1;
+            echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+                , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
+            foreach ($this->clients as $client) {
+                if ($from !== $client) {
+                    // The sender is not the receiver, send to each client connected
+                    $client->send($msg);
+                }
             }
-        }
+        } else if ($jsonmsg->cmdType == 'backlog') {
+            $this->dumpChatBacklog($from);
+        } 
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -82,3 +87,4 @@ class Chat implements MessageComponentInterface {
    //   }
    // }
 }
+
