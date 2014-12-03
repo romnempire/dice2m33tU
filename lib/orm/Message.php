@@ -38,9 +38,7 @@ class Message {
 
 	public static function create($session, $timestamp, $text, $user) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		// get last mid in database $mid = ?;
-		$result = $mysqli->query("INSERT INTO a6_Message VALUES (
-			"   . $mid . ", " .
+		$result = $mysqli->query("INSERT INTO a6_Message VALUES ( " .
 			"'" . $mysqli->real_escape_string($session) . "', " .
 			"'" . $mysqli->real_escape_string($timestamp) . "', " .
 			"'" . $locationX . ", " .
@@ -49,6 +47,7 @@ class Message {
 			"'" . $sizeY . "')"
 			);
 		if ($result) {
+			$mid = $mysqli->insert_id;
 			return new Message($mid, $session, $timestamp, $text, $user);
 		}
 		return null;
@@ -76,7 +75,7 @@ class Message {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session . "ORDER BY timestamp");
 
-		$all = $result->fetch_all();
+		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
@@ -89,7 +88,7 @@ class Message {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user . "ORDER BY timestamp");
 
-		return $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);

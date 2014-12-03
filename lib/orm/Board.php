@@ -47,15 +47,15 @@ class Board {
 	
 	public static function create($session, $background, $length, $width) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_Board VALUES (0, " . 
+		$result = $mysqli->query("INSERT INTO a6_Board VALUES ( " . 
 			"'" . $mysqli->real_escape_string($session) . "', " .
 			"'" . $mysqli->real_escape_string($background) . "', " . 
 				  $length . ", " .
 				. $width . ")"
 			);
 		if ($result) {
-			$new_id = $mysqli->insert_id;
-			return new Board($new_id, $session, $background, $length, $width);
+			$bid = $mysqli->insert_id;
+			return new Board($bid, $session, $background, $length, $width);
 		}
 		return null;
 	}
