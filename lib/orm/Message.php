@@ -59,11 +59,11 @@ class Message {
 				return null;
 			}
 			$info = $result->fetch_array();
-			return new Message($info['mid']),
+			return new Message($info['mid'],
 							 $info['session'],
 							 $info['timestamp'],
 							 $info['text'],
-							 $info['user'],
+							 $info['user']
 							 );
 		}
 		return null;
@@ -73,7 +73,7 @@ class Message {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session . "ORDER BY timestamp");
 
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+		$all = $result->fetch_all();
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
