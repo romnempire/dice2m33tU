@@ -1,5 +1,7 @@
 <?php
 
+namespace orm;
+
 // Message Interface
 //
 // if the row can be inserted, then create returns a Message object
@@ -37,7 +39,7 @@ class Message {
 	private $user;
 
 	public static function create($session, $timestamp, $text, $user) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("INSERT INTO a6_Message (session, timestamp, text, user) VALUES ( " .
 			"'" . $mysqli->real_escape_string($session) 	. "', " .
 			"'" . $mysqli->real_escape_string($timestamp) 	. "', " .
@@ -52,7 +54,7 @@ class Message {
 	}
 
 	public static function findByID($mid) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE mid = " . $mid);
 		if ($result) {
 			if ($result->num_rows == 0) {
@@ -70,10 +72,11 @@ class Message {
 	}
 
 	public static function findBySession($session) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session . "ORDER BY timestamp");
+		$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = \"pets\" ORDER BY timestamp");
+        echo gettype($result);
 
-		$all = $result->fetch_all();
+		$all = $result::fetch_all();
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
@@ -126,7 +129,7 @@ class Message {
 	}
 
 	public function delete() {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$mysqli->query("DELETE FROM a6_Message WHERE mid = " . $this->mid);
 	}
 }

@@ -26,6 +26,7 @@ class Chat implements MessageComponentInterface {
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $jsonmsg = json_decode($msg);
+        echo $msg;
         if ($jsonmsg->cmdType == 'message') {
             $this->processInboundMessage($from, $jsonmsg);
         } else if ($jsonmsg->cmdType == 'backlog') {
@@ -98,7 +99,7 @@ class Chat implements MessageComponentInterface {
 */
 	public function dumpChatBacklog(ConnectionInterface $conn, $msg) {
 		$session = $msg->session;
-		$messages = Message::findBySession($session);
+		$messages = \orm\Message::findBySession($session);
     	for ($index = 0; $index < sizeof($messages); $index++) {
       		$data = array(
        			"cmdType" => "message",

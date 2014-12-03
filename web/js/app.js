@@ -51,9 +51,9 @@ function processInboundMapLock(message) {
 
 //Outbound Functions
 
-function login(user, session) {
+function login(user, sesh) {
     session.user = user;
-    session.session = session;
+    session.session = sesh;
     $('#login').css({visibility:'hidden'});
     var backlogreq = {'cmdType': 'backlog',
                       'session': session.session,
