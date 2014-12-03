@@ -7,7 +7,7 @@ use Ratchet\ConnectionInterface;
 
 class Chat implements MessageComponentInterface {
     protected $clients;
-    protected $session;
+    protected $session; // <-- CHANGE Roman :3
     protected $date;
 
     public function __construct() {
@@ -94,9 +94,9 @@ class Chat implements MessageComponentInterface {
     	for ($index = 0; $index < sizeof($messages); $index++) {
       		$data = array(
        			"cmdType" => "message",
-        		"timestamp" => $messages[$index].getTimestamp(),
-        		"text" => $messages[$index].getText(),
-        		"user" => $messages[$index].getUser()
+        		"timestamp" => $messages[$index]->getTimestamp(),
+        		"text" => $messages[$index]->getText(),
+        		"user" => $messages[$index]->getUser()
       		);
       		$conn->send(json_encode($data));
     	}
