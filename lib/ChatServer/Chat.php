@@ -2,7 +2,8 @@
 namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use orm\Message;
+
+// require 'lib/orm/Message.php';
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -20,19 +21,27 @@ class Chat implements MessageComponentInterface {
 
         echo "New connection! ({$conn->resourceId})\n";
 
-        $this->dumpChatBacklog($conn);
+        // $this->dumpChatBacklog($conn);
+        // $this->newDumpChatBacklog($conn);
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+        $jsonmsg = json_decode($msg);
+        if ($jsonmsg->cmdType == 'message') {
+            $numRecv = count($this->clients) - 1;
+            echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+                , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
+            foreach ($this->clients as $client) {
+                if ($from !== $client) {
+                    // The sender is not the receiver, send to each client connected
+                    $client->send($msg);
+                }
             }
+        } else if ($jsonmsg->cmdType == 'backlog') {
+            $this->dumpChatBacklog($from);
+        } else if ($jsonmsg->cmdType == 'diceroll') {
+            $this->rollDice($from, $jsonmsg);
         }
         //update database
         //should know session
@@ -81,17 +90,19 @@ class Chat implements MessageComponentInterface {
 */
 	public function dumpChatBacklog(ConnectionInterface $conn) {
 		$session = "pets"; // should be more general
-		$messages = Message.findBySession($session);
-    for ($index = 0; $index < sizeof($messages); $index++) {
-      $data = array(
-        "cmdType" => "message",
-        "timestamp" => $messages[$index].getTimestamp(),
-        "text" => $messages[$index].getText(),
-        "user" => $messages[$index].getUser()
-      );
-      $conn->send(json_encode($data));
+		$messages = Message::findBySession($session);
+    	for ($index = 0; $index < sizeof($messages); $index++) {
+      		$data = array(
+       			"cmdType" => "message",
+        		"timestamp" => $messages[$index].getTimestamp(),
+        		"text" => $messages[$index].getText(),
+        		"user" => $messages[$index].getUser()
+      		);
+      		$conn->send(json_encode($data));
+    	}
+  	}
+
+    public function rollDice(ConnectionInterface $conn, $msg) {
+        console.log('diceroll');
     }
-  }
-
-
 }

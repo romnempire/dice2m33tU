@@ -149,26 +149,6 @@ button:hover {
 	color: #fff;
 }
 
-#chat {
-	right: 2%;
-	width: 25%;
-	height: 100%;
-	float: bottom right;
-	border: solid 1px #000;
-	position: absolute;
-	background: #DAC1AF;
-	padding-left: 4px;
-	padding-right: 4px;
-
-}
-
-#chatinput {
-	bottom: 1%;
-	width: 100%;
-	text-align: center;
-	position: absolute;
-}
-
 #dice {
 	bottom: 1%;
 	left: 2%;
@@ -245,6 +225,26 @@ button:hover {
 	z-index: 7;
 }
 
+/*chat*/
+#chat {
+  right: 2%;
+  width: 25%;
+  height: 100%;
+  float: bottom right;
+  border: solid 1px #000;
+  position: absolute;
+  background: #DAC1AF;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#chatinput {
+  bottom: 1%;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+}
+
 #oldchat {
 
 }
@@ -254,8 +254,21 @@ button:hover {
   overflow-y:scroll;
 }
 
-/*map*/
+#login {
+  z-index: 2;
+  background-color:white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+#loginform {
+  text-align: center;
+  margin-top: 40%;
+}
 
+/*map*/
 #map {
 	left: 2%;
 	width: 70%;
