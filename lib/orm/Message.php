@@ -38,13 +38,11 @@ class Message {
 
 	public static function create($session, $timestamp, $text, $user) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_Message VALUES ( " .
-			"'" . $mysqli->real_escape_string($session) . "', " .
-			"'" . $mysqli->real_escape_string($timestamp) . "', " .
-			"'" . $locationX . ", " .
-			"'" . $locationY . "', " .
-			"'" . $sizeX . "', " .
-			"'" . $sizeY . "')"
+		$result = $mysqli->query("INSERT INTO a6_Message (session, timestamp, text, user) VALUES ( " .
+			"'" . $mysqli->real_escape_string($session) 	. "', " .
+			"'" . $mysqli->real_escape_string($timestamp) 	. "', " .
+			"'" . $mysqli->real_escape_string($text) 		. "', " .
+			"'" . $mysqli->real_escape_string($user) 		. "'"
 			);
 		if ($result) {
 			$mid = $mysqli->insert_id;
