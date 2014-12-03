@@ -59,12 +59,13 @@ class Message {
 				return null;
 			}
 			$info = $result->fetch_array();
-			return new Message($info['mid']),
-							 $info['session'],
-							 $info['timestamp'],
-							 $info['text'],
-							 $info['user'],
-							 );
+			return new Message(
+							$info['mid'],
+							$info['session'],
+							$info['timestamp'],
+							$info['text'],
+							$info['user']
+							);
 		}
 		return null;
 	}
@@ -73,7 +74,7 @@ class Message {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session . "ORDER BY timestamp");
 
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
@@ -86,7 +87,7 @@ class Message {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user . "ORDER BY timestamp");
 
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);

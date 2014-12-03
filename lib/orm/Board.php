@@ -44,12 +44,12 @@ class Board {
 	private $background;
 	private $length;
 	private $width;
-	
+
 	public static function create($session, $background, $length, $width) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_Board (session, background, length, width) VALUES ( " . 
+		$result = $mysqli->query("INSERT INTO a6_Board (session, background, length, width) VALUES ( " .
 			"'" . $mysqli->real_escape_string($session) . "', " .
-			"'" . $mysqli->real_escape_string($background) . "', " . 
+			"'" . $mysqli->real_escape_string($background) . "', " .
 				  $length . ", " .
 				. $width . ")"
 			);
@@ -59,7 +59,7 @@ class Board {
 		}
 		return null;
 	}
-	
+
 	public static function findByID($bid) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Board WHERE bid = " . $bid);
@@ -77,33 +77,33 @@ class Board {
 		}
 		return null;
 	}
-	
+
 	public static function getAllBoards() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Board ORDER BY bid");
-		
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+
+		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$boards = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$boards[$index] = new User($all[$index]['bid'],$all[$index]['session'],$all[$index]['background'], $all[$index]['length'],$all[$index]['width']);
 		}
-		
+
 		return $boards;
 	}
-	
+
 	public static function getBySession($session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Board WHERE session = " . $session);
-		
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+
+		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$boards = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$boards[$index] = new User($all[$index]['bid'],$all[$index]['session'],$all[$index]['background'], $all[$index]['length'],$all[$index]['width']);
 		}
-		
+
 		return $boards;
 	}
-	
+
 	private function __construct($bid, $session, $background, $length, $width) {
 		$this->bid = $bid;
 		$this->session = $session;
@@ -111,48 +111,48 @@ class Board {
 		$this->length = $length;
 		$this->width = $width;
 	}
-	
+
 	public function getID() {
 		return $this->bid;
 	}
-	
+
 	public function getSession() {
 		return $this->session;
 	}
-	
+
 	public function getBackground() {
 		return $this->background;
 	}
-	
+
 	public function getLength() {
 		return $this->length;
 	}
-	
+
 	public function getWidth() {
 		return $this->width;
 	}
-	
+
 	public function setBackground($background) {
 		$this->background = $background;
 		return $this->update();
 	}
-	
+
 	public function setLength($length) {
 		$this->length = $length;
 		return $this->update();
 	}
-	
+
 	public function setWidth($width) {
 		$this->width = $width;
 		return $this->update();
 	}
-	
+
 	public function update() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("UPDATE a6_Board SET background = ". $this->background . ", length = " . $this->length . ", width = " . $this->width . " WHERE bid = " . $this->bid);
 		return $result;
 	}
-	
+
 	public function delete() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$mysqli->query("DELETE FROM a6_Board WHERE bid = " . $this->bid);

@@ -2,17 +2,16 @@
 namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-
-// require 'lib/orm/Message.php';
+use lib\orm\Message.php;
+require_once ('lib/orm/Message.php');
 
 class Chat implements MessageComponentInterface {
     protected $clients;
-    protected $session; // <-- CHANGE Roman :3
-    protected $date;
+    protected $session = 'pets'; // <-- CHANGE Roman :3
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
-        $date = new DateTime();
+        date_default_timezone_set('America/New_York');
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -46,7 +45,8 @@ class Chat implements MessageComponentInterface {
         //update database
         //should know session
         //get timestamp
-        Message.create($session, $date->getTimestamp(), $msg, $from);
+        $date = new DateTime();
+        Message::create($session, '00:00:00', "hissss", "cat");
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -89,16 +89,15 @@ class Chat implements MessageComponentInterface {
     }
 */
 	public function dumpChatBacklog(ConnectionInterface $conn) {
-		$session = "pets"; // should be more general
 		$messages = Message::findBySession($session);
-    	for ($index = 0; $index < sizeof($messages); $index++) {
-      		$data = array(
+    for ($index = 0; $index < sizeof($messages); $index++) {
+      	$data = array(
        			"cmdType" => "message",
         		"timestamp" => $messages[$index]->getTimestamp(),
         		"text" => $messages[$index]->getText(),
         		"user" => $messages[$index]->getUser()
-      		);
-      		$conn->send(json_encode($data));
+      	);
+      	$conn->send(json_encode($data));
     	}
   	}
 

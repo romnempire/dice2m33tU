@@ -26,10 +26,10 @@
 class User {
 	private $name;
 	private $session;
-	
+
 	public static function create($name, $session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_User VALUES (" . 
+		$result = $mysqli->query("INSERT INTO a6_User VALUES (" .
 			"'" . $mysqli->real_escape_string($name) . "', " .
 			"'" . $mysqli->real_escape_string($session) . "')";
 			);
@@ -38,7 +38,7 @@ class User {
 		}
 		return null;
 	}
-	
+
 	public static function findByName($name) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_User WHERE name = " . $name);
@@ -53,46 +53,46 @@ class User {
 		}
 		return null;
 	}
-	
+
 	public static function getAllUsers() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_User ORDER BY name");
-		
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM]);
+
+		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$users = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$users[$index] = new User($all[$index]['name'],$all[$index]['session']);
 		}
-		
-		return $users;		
+
+		return $users;
 	}
-	
+
 	public static function getBySession($session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_User WHERE session = " . $session);
-		
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM]);
+
+		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$users = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$users[$index] = new User($all[$index]['name'],$all[$index]['session']);
 		}
-		
-		return $users;	
+
+		return $users;
 	}
-	
+
 	private function __construct($name, $session) {
 		$this->name = $name;
 		$this->session = $session;
 	}
-	
+
 	public function getName() {
 		return $this->name;
 	}
-	
+
 	public function getSession() {
 		return $this->session;
 	}
-	
+
 	public function delete() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$mysqli->query("DELETE FROM a6_User WHERE name = " . $this->name);
