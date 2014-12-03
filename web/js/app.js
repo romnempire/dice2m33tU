@@ -84,8 +84,7 @@ function processOutboundMessage(text, timestamp) {
     var messagereq = {'cmdType': 'message',
                    'user': session.user,
                    'session': session.session,
-                   'text': text,
-                   'timestamp': timestamp};
+                   'text': text};
     conn.send(JSON.stringify(messagereq));
 };
 

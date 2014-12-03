@@ -7,12 +7,12 @@ use Ratchet\ConnectionInterface;
 
 class Chat implements MessageComponentInterface {
     protected $clients;
-    protected $session;
+    //protected $session;
     protected $date;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
-        $date = new DateTime();
+        $date = new \DateTime();
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -28,16 +28,12 @@ class Chat implements MessageComponentInterface {
     public function onMessage(ConnectionInterface $from, $msg) {
         $jsonmsg = json_decode($msg);
         if ($jsonmsg->cmdType == 'message') {
-            $this->processInboundMessage($from, $jsonmsg)
+            $this->processInboundMessage($from, $jsonmsg);
         } else if ($jsonmsg->cmdType == 'backlog') {
-            $this->dumpChatBacklog($from);
+            $this->dumpChatBacklog($from, $jsonmsg);
         } else if ($jsonmsg->cmdType == 'diceroll') {
             $this->rollDice($from, $jsonmsg);
-        }
-        //update database
-        //should know session
-        //get timestamp
-        Message.create($session, $date->getTimestamp(), $msg, $from);
+        }        
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -54,8 +50,15 @@ class Chat implements MessageComponentInterface {
     }
 
     public function processInboundMessage(ConnectionInterface $conn, $msg) {
-        Message::getNextMid
-        $PHPMessage::create($mid, $msg->session, $msg->timestamp, $msg->text, $msg->user);
+        $PHPMessage = Message::create($msg->$session, $date->getTimestamp(), $msg->text, $msg->user);
+        //$PHPMessage::create($mid, $msg->session, $msg->timestamp, $msg->text, $msg->user);
+
+        $data = array(
+            "cmdType" => "message",
+            "timestamp" => $PHPMessage->getTimestamp(),
+            "text" => $PHPMessage->getText(),
+            "user" => $PHPMessage->getUser()
+        );
 
         $numRecv = count($this->clients) - 1;
         echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
@@ -64,11 +67,10 @@ class Chat implements MessageComponentInterface {
         foreach ($this->clients as $client) {
             if ($from !== $client) {
                 // The sender is not the receiver, send to each client connected
-                $client->send($msg);
+                $client->send(json_encode($data));
             }
         }
     }
-
 
 	// turn to ORM
 /*
@@ -95,15 +97,15 @@ class Chat implements MessageComponentInterface {
 
     }
 */
-	public function dumpChatBacklog(ConnectionInterface $conn) {
-		$session = "pets"; // should be more general
+	public function dumpChatBacklog(ConnectionInterface $conn, $msg) {
+		$session = $msg->session;
 		$messages = Message::findBySession($session);
     	for ($index = 0; $index < sizeof($messages); $index++) {
       		$data = array(
        			"cmdType" => "message",
-        		"timestamp" => $messages[$index].getTimestamp(),
-        		"text" => $messages[$index].getText(),
-        		"user" => $messages[$index].getUser()
+        		"timestamp" => $messages[$index]->getTimestamp(),
+        		"text" => $messages[$index]->getText(),
+        		"user" => $messages[$index]->getUser()
       		);
       		$conn->send(json_encode($data));
     	}
