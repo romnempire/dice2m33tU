@@ -100,6 +100,7 @@ class Chat implements MessageComponentInterface {
 	public function dumpChatBacklog(ConnectionInterface $conn, $msg) {
 		$session = $msg->session;
 		$messages = \orm\Message::findBySession($session);
+        //echo serialize($messages);
     	for ($index = 0; $index < sizeof($messages); $index++) {
       		$data = array(
        			"cmdType" => "message",
@@ -112,6 +113,6 @@ class Chat implements MessageComponentInterface {
   	}
 
     public function rollDice(ConnectionInterface $conn, $msg) {
-        console.log('diceroll');
+        echo 'diceroll \n';
     }
 }

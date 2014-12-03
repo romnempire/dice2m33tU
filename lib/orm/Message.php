@@ -93,11 +93,13 @@ class Message {
         $dbconn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die ('Error connecting to mysql');
         echo "connected to db \n";
 
-        $query = "SELECT timestamp, text, user, session, mid FROM a6_Message WHERE a6_Message.session = \". $session .\"";
+        echo $session;
+        $query = "SELECT timestamp, text, user, session, mid FROM a6_Message WHERE a6_Message.session = \"" . $session . "\"";
         $result = $dbconn->query($query) or die("Error in the consult.." . mysqli_error($dbconn));
         $messages = array();
         while($row = mysqli_fetch_array($result)) {
-            $messages[] = new User($row["mid"], $row["session"], $row["timestamp"], $row["text"], $row["user"]);
+            //echo serialize($row);
+            $messages[] = new Message($row["mid"], $row["session"], $row["timestamp"], $row["text"], $row["user"]);
         }
         return $messages;
     }
@@ -120,9 +122,9 @@ class Message {
 	private function __construct($mid, $session, $timestamp, $text, $user) {
 		$this->name = $mid;
 		$this->session = $session;
-		$this->locationX = $timestamp;
-		$this->locationY = $text;
-		$this->sizeX = $user;
+		$this->timestamp = $timestamp;
+		$this->text = $text;
+		$this->user = $user;
 	}
 
 	public function getID() {
