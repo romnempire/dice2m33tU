@@ -2,12 +2,16 @@
 namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use orm\Message;
 
 class Chat implements MessageComponentInterface {
     protected $clients;
+    protected $session;
+    protected $date;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
+        $date = new DateTime();
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -30,6 +34,10 @@ class Chat implements MessageComponentInterface {
                 $client->send($msg);
             }
         }
+        //update database
+        //should know session
+        //get timestamp
+        Message.create($session, $date->getTimestamp(), $msg, $from);
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -45,6 +53,9 @@ class Chat implements MessageComponentInterface {
         $conn->close();
     }
 
+
+	// turn to ORM
+/*
     public function dumpChatBacklog(ConnectionInterface $conn) {
         $dbhost = 'classroom.cs.unc.edu';
         $dbuser = 'serust';
@@ -67,4 +78,20 @@ class Chat implements MessageComponentInterface {
         }
 
     }
+*/
+	public function dumpChatBacklog(ConnectionInterface $conn) {
+		$session = "pets"; // should be more general
+		$messages = Message.findBySession($session);
+    for ($index = 0; $index < sizeof($messages); $index++) {
+      $data = array(
+        "cmdType" => "message",
+        "timestamp" => $messages[$index].getTimestamp(),
+        "text" => $messages[$index].getText(),
+        "user" => $messages[$index].getUser()
+      );
+      $conn->send(json_encode($data));
+    }
+  }
+
+
 }

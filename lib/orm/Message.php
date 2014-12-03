@@ -35,12 +35,13 @@ class Message {
 	private $timestamp;
 	private $text;
 	private $user;
-	
-	public static function create($mid, $session, $timestamp, $text, $user) {
+
+	public static function create($session, $timestamp, $text, $user) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_Message VALUES ( 
+		// get last mid in database $mid = ?;
+		$result = $mysqli->query("INSERT INTO a6_Message VALUES (
 			"   . $mid . ", " .
-			"'" . $mysqli->real_escape_string($session) . "', " . 
+			"'" . $mysqli->real_escape_string($session) . "', " .
 			"'" . $mysqli->real_escape_string($timestamp) . "', " .
 			"'" . $locationX . ", " .
 			"'" . $locationY . "', " .
@@ -52,7 +53,7 @@ class Message {
 		}
 		return null;
 	}
-	
+
 	public static function findByID($mid) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Message WHERE mid = " . $mid);
@@ -70,33 +71,33 @@ class Message {
 		}
 		return null;
 	}
-	
+
 	public static function findBySession($session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session);
-		
+		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session . "ORDER BY timestamp");
+
 		$all = $result->fetch_all();
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
 		}
-		
-		return $messages;	
+
+		return $messages;
 	}
-	
+
 	public static function findByUser($user) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user);
-		
+		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user . "ORDER BY timestamp");
+
 		return $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
 		$messages = array();
 		for ($index = 0; $index < sizeof($all); $index++) {
 			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
 		}
-		
-		return $messages;	
+
+		return $messages;
 	}
-	
+
 	private function __construct($mid, $session, $timestamp, $text, $user) {
 		$this->name = $mid;
 		$this->session = $session;
@@ -104,27 +105,27 @@ class Message {
 		$this->locationY = $text;
 		$this->sizeX = $user;
 	}
-	
+
 	public function getID() {
 		return $this->mid;
 	}
-	
+
 	public function getSession() {
 		return $this->session;
 	}
-	
+
 	public function getTimestamp() {
 		return $this->timestamp;
 	}
-	
+
 	public function getText() {
 		return $this->text;
 	}
-	
+
 	public function getUser() {
 		return $this->user;
 	}
-	
+
 	public function delete() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$mysqli->query("DELETE FROM a6_Message WHERE mid = " . $this->mid);
