@@ -2,8 +2,7 @@
 namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-
-// require 'lib/orm/Message.php';
+require 'lib/orm/Message.php';
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -50,7 +49,7 @@ class Chat implements MessageComponentInterface {
     }
 
     public function processInboundMessage(ConnectionInterface $conn, $msg) {
-        $PHPMessage = Message::create($msg->$session, $date->getTimestamp(), $msg->text, $msg->user);
+        $PHPMessage = Message::create($msg->session, $date->getTimestamp(), $msg->text, $msg->user);
         //$PHPMessage::create($mid, $msg->session, $msg->timestamp, $msg->text, $msg->user);
 
         $data = array(
