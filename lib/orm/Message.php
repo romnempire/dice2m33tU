@@ -71,19 +71,36 @@ class Message {
 		return null;
 	}
 
-	public static function findBySession($session) {
-		$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = \"pets\" ORDER BY timestamp");
-        echo gettype($result);
+	// public static function findBySession($session) {
+	// 	$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+	// 	$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = \"pets\" ORDER BY timestamp");
+ //        echo gettype($result);
 
-		$all = $result::fetch_all();
-		$messages = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
-		}
+	// 	$all = $result::fetch_all();
+	// 	$messages = array();
+	// 	for ($index = 0; $index < sizeof($all); $index++) {
+	// 		$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
+	// 	}
 
-		return $messages;
-	}
+	// 	return $messages;
+	// }
+
+    public static function findBySession($session) {
+        $dbhost = 'classroom.cs.unc.edu';
+        $dbuser = 'serust';
+        $dbpass = 'CH@ngemenow99Please!serust';
+        $dbname = 'serustdb';
+        $dbconn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die ('Error connecting to mysql');
+        echo "connected to db \n";
+
+        $query = "SELECT timestamp, text, user, session, mid FROM a6_Message WHERE a6_Message.session = \". $session .\"";
+        $result = $dbconn->query($query) or die("Error in the consult.." . mysqli_error($dbconn));
+        $messages = array();
+        while($row = mysqli_fetch_array($result)) {
+            $messages[] = new User($row["mid"], $row["session"], $row["timestamp"], $row["text"], $row["user"]);
+        }
+        return $messages;
+    }
 
     // not valid php
 
