@@ -7,7 +7,6 @@ conn.onopen = function(e) {
 
 conn.onmessage = function(e) {
     var data = $.parseJSON(e.data);
-    console.log(data);
     if (data.cmdType) {
         if (data.cmdType === 'message') {
             processInboundMessage(data);

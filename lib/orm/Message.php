@@ -71,6 +71,8 @@ class Message {
 		return null;
 	}
 
+    // don't use fetch_all(), i'll have to recompile php to use it
+
 	// public static function findBySession($session) {
 	// 	$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 	// 	$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = \"pets\" ORDER BY timestamp");
@@ -93,12 +95,10 @@ class Message {
         $dbconn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die ('Error connecting to mysql');
         echo "connected to db \n";
 
-        echo $session;
         $query = "SELECT timestamp, text, user, session, mid FROM a6_Message WHERE a6_Message.session = \"" . $session . "\"";
         $result = $dbconn->query($query) or die("Error in the consult.." . mysqli_error($dbconn));
         $messages = array();
         while($row = mysqli_fetch_array($result)) {
-            //echo serialize($row);
             $messages[] = new Message($row["mid"], $row["session"], $row["timestamp"], $row["text"], $row["user"]);
         }
         return $messages;
