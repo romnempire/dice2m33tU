@@ -82,18 +82,20 @@ class Message {
 		return $messages;
 	}
 
-	public static function findByUser($user) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user . "ORDER BY timestamp");
+    // not valid php
 
-		$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
-		$messages = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
-		}
+	// public static function findByUser($user) {
+	// 	$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+	// 	$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user . "ORDER BY timestamp");
 
-		return $messages;
-	}
+	// 	$all = $result->fetch_all([ int $resulttype = MYSQLI_NUM ]);
+	// 	$messages = array();
+	// 	for ($index = 0; $index < sizeof($all); $index++) {
+	// 		$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
+	// 	}
+
+	// 	return $messages;
+	// }
 
 	private function __construct($mid, $session, $timestamp, $text, $user) {
 		$this->name = $mid;
