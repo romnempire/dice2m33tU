@@ -28,16 +28,7 @@ class Chat implements MessageComponentInterface {
     public function onMessage(ConnectionInterface $from, $msg) {
         $jsonmsg = json_decode($msg);
         if ($jsonmsg->cmdType == 'message') {
-            $numRecv = count($this->clients) - 1;
-            echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-                , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
-
-            foreach ($this->clients as $client) {
-                if ($from !== $client) {
-                    // The sender is not the receiver, send to each client connected
-                    $client->send($msg);
-                }
-            }
+            $this->processInboundMessage($from, $jsonmsg)
         } else if ($jsonmsg->cmdType == 'backlog') {
             $this->dumpChatBacklog($from);
         } else if ($jsonmsg->cmdType == 'diceroll') {
@@ -60,6 +51,22 @@ class Chat implements MessageComponentInterface {
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
+    }
+
+    public function processInboundMessage(ConnectionInterface $conn, $msg) {
+        Message::getNextMid
+        $PHPMessage::create($mid, $msg->session, $msg->timestamp, $msg->text, $msg->user);
+
+        $numRecv = count($this->clients) - 1;
+        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+
+        foreach ($this->clients as $client) {
+            if ($from !== $client) {
+                // The sender is not the receiver, send to each client connected
+                $client->send($msg);
+            }
+        }
     }
 
 
