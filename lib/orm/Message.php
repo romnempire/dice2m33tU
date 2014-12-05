@@ -1,5 +1,7 @@
 <?php
 
+namespace orm;
+
 // Message Interface
 //
 // if the row can be inserted, then create returns a Message object
@@ -28,6 +30,8 @@
 // public function getUser();
 //
 // public function delete();
+//
+// public function getJSON();
 
 class Message {
 	private $mid;
@@ -37,71 +41,82 @@ class Message {
 	private $user;
 
 	public static function create($session, $timestamp, $text, $user) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_Message (session, timestamp, text, user) VALUES ( " .
-			"'" . $mysqli->real_escape_string($session) 	. "', " .
-			"'" . $mysqli->real_escape_string($timestamp) 	. "', " .
-			"'" . $mysqli->real_escape_string($text) 		. "', " .
-			"'" . $mysqli->real_escape_string($user) 		. "'"
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("INSERT INTO a6_Message (session, timestamp, text, user) VALUES ( " .
+			"'" . $db->real_escape_string($session) 	. "', " .
+			"'" . $db->real_escape_string($timestamp) 	. "', " .
+			"'" . $db->real_escape_string($text) 		. "', " .
+			"'" . $db->real_escape_string($user) 		. "'"
 			);
 		if ($result) {
-			$mid = $mysqli->insert_id;
+			$mid = $db->insert_id;
 			return new Message($mid, $session, $timestamp, $text, $user);
 		}
 		return null;
 	}
 
 	public static function findByID($mid) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE mid = " . $mid);
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("SELECT * FROM a6_Message WHERE mid = " . $mid);
 		if ($result) {
 			if ($result->num_rows == 0) {
 				return null;
 			}
-			$info = $result->fetch_array();
+			$row = mysqli_fetch_array($result);
 			return new Message(
-							$info['mid'],
-							$info['session'],
-							$info['timestamp'],
-							$info['text'],
-							$info['user']
+							$row['mid'],
+							$row['session'],
+							$row['timestamp'],
+							$row['text'],
+							$row['user']
 							);
 		}
 		return null;
 	}
 
-	public static function findBySession($session) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE session = " . $session . "ORDER BY timestamp");
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
+	public static function findBySession($session) {
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("SELECT * FROM a6_Message WHERE session = \"" . $session . "\" ORDER BY timestamp");
+
 		$messages = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
+		while ($row = mysqli_fetch_array($result)) {
+			$messages[] = new Message(
+				$row['mid'],
+				$row['session'],
+				$row['timestamp'],
+				$row['text'],
+				$row['user']
+			);
 		}
 
 		return $messages;
 	}
 
 	public static function findByUser($user) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Message WHERE user = " . $user . "ORDER BY timestamp");
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("SELECT * FROM a6_Message WHERE user = \"" . $user . "\" ORDER BY timestamp");
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$messages = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$messages[$index] = new User($all[$index]['mid'],$all[$index]['session'],$all[$index]['timestamp'], $all[$index]['text'],$all[$index]['user']);
+		while ($row = mysqli_fetch_array($result)) {
+			$messages[] = new Message(
+				$row['mid'],
+				$row['session'],
+				$row['timestamp'],
+				$row['text'],
+				$row['user']
+			);
 		}
 
 		return $messages;
 	}
 
 	private function __construct($mid, $session, $timestamp, $text, $user) {
-		$this->name = $mid;
+		$this->mid = $mid;
 		$this->session = $session;
-		$this->locationX = $timestamp;
-		$this->locationY = $text;
-		$this->sizeX = $user;
+		$this->timestamp = $timestamp;
+		$this->text = $text;
+		$this->user = $user;
 	}
 
 	public function getID() {
@@ -125,8 +140,19 @@ class Message {
 	}
 
 	public function delete() {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$mysqli = new \mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$mysqli->query("DELETE FROM a6_Message WHERE mid = " . $this->mid);
+	}
+
+	public function getJSON() {
+		$json_obj = array(
+			'mid' => $this->mid,
+			'session' => $this->session,
+			'timestamp' => $this->timestamp,
+			'text' => $this->text,
+			'user' => $this->user
+		);
+		return json_encode($json_obj);
 	}
 }
 ?>

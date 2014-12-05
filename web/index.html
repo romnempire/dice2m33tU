@@ -20,13 +20,13 @@
         </center>
         </div>
         </div>
-        
+
         <div id="container">
             <div id="map">
                 <div id="grid">
                 </div>
                 <div id="toybox"><h2>toybox</h2>
-               
+
                 </div>
                 <div id="dice">
                 	<a href="#show">
@@ -51,17 +51,11 @@
 						</div>
 					</a>
 				</div>
-                <div id="statscontainer">
-					<a name="statsclose"><div id="statshide"></div></a>
-					<a name="showstats"><div id="stats">stats here!!!
-						<br><br><br><a href="#statsclose">(close)</a>
-					</div></a>
-				</div>
-            
+
                 <div id="options">
                     <button type="button" onclick="createURLChooser(this)">Add Toy</button>
                     <button type="button" onclick="$('.griddy').toggle();return false;">Grid</button>
-                    <button type="button" onclick="alert('I like food')">Stats</button>
+                    <button type="button" onclick="alert('I like food')">Trashcan</button>
                 </div>
             </div>
 
@@ -70,10 +64,12 @@
                 </div>
 
                 <div class="input-group" id="chatinput">
+                  <form name="messageform">
                     <input id="blast" type="text" class="form-control" placeholder="send something to everyone" name="chatinput">
                     <span class="input-group-btn">
-                        <button id="send" class="btn btn-success" type="button">Send</button>
+                        <button id="send" class="btn btn-success" type="button" onclick="processOutBoundMessage(messageform.blast.value, Date.now());">Send</button>
                     </span>
+                  </form>
                 </div>
                 <div id="login">
                     <form id="loginform">
@@ -82,15 +78,15 @@
                     <input type="text" name="session">Session
                         <button type="button"
                         onclick="login(
-                        document.forms['loginform'].elements['name'].value,
-                        document.forms['loginform'].elements['session'].value
+                          document.forms['loginform'].elements['name'].value,
+                          document.forms['loginform'].elements['session'].value
                         );">Login</button>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- jQuery --> 
+        <!-- jQuery -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="public/bower_components/jquery/jquery.min.js"><\/script>')</script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>

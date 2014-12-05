@@ -22,16 +22,18 @@
 // public function getSession();
 //
 // public function delete();
+//
+// public function getJSON();
 
 class User {
 	private $name;
 	private $session;
 
 	public static function create($name, $session) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_User VALUES (" .
-			"'" . $mysqli->real_escape_string($name) . "', " .
-			"'" . $mysqli->real_escape_string($session) . "')";
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("INSERT INTO a6_User VALUES (" .
+			"'" . mysqli_real_escape_string($name) . "', " .
+			"'" . mysqli_real_escape_string($session) . "')";
 			);
 		if ($result) {
 			return new Board($name, $session);
@@ -40,44 +42,49 @@ class User {
 	}
 
 	public static function findByName($name) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_User WHERE name = " . $name);
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("SELECT * FROM a6_User WHERE name = \"" . $name . "\"");
 		if ($result) {
 			if ($result->num_rows == 0) {
 				return null;
 			}
-			$info = $result->fetch_array();
-			return new User($info['name']),
-							$info['session']
-							);
+			$row = $result->fetch_array();
+			return new User(
+				$row['name'],
+				$row['session']
+			);
 		}
 		return null;
 	}
 
 	public static function getAllUsers() {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_User ORDER BY name");
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("SELECT * FROM a6_User ORDER BY name");
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
-		$users = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$users[$index] = new User($all[$index]['name'],$all[$index]['session']);
-		}
+		$messages = array();
+			while ($row = mysqli_fetch_array($result)) {
+				$messages[] = new User(
+					$row['name'],
+					$row['session'],
+				);
+			}
 
-		return $users;
+			return $messages;
 	}
 
 	public static function getBySession($session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_User WHERE session = " . $session);
+		$result = $mysqli->query("SELECT * FROM a6_User WHERE session = \"" . $session . "\"");
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
-		$users = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$users[$index] = new User($all[$index]['name'],$all[$index]['session']);
-		}
+		$messages = array();
+			while ($row = mysqli_fetch_array($result)) {
+				$messages[] = new User(
+					$row['name'],
+					$row['session'],
+				);
+			}
 
-		return $users;
+		return $messages;
 	}
 
 	private function __construct($name, $session) {
@@ -96,6 +103,14 @@ class User {
 	public function delete() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$mysqli->query("DELETE FROM a6_User WHERE name = " . $this->name);
+	}
+
+	public function getJSON() {
+		$json_obj = array(
+			'name' => $this->name,
+			'session' => $this->session
+		);
+		return json_encode($json_obj);
 	}
 }
 ?>

@@ -41,6 +41,9 @@
 // public function update();
 //
 // public function delete();
+//
+// public function getJSON();
+
 
 class Piece {
 	private $image;
@@ -52,11 +55,11 @@ class Piece {
 	private $sizeY;
 
 	public static function create($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("INSERT INTO a6_Piece VALUES (" .
-			"'" . $mysqli->real_escape_string($image) . "', " .
-			"'" . $mysqli->real_escape_string($session) . "', " .
-			"'" . $mysqli->real_escape_string($board) . "', " .
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("INSERT INTO a6_Piece VALUES (" .
+			"'" . mysqli_real_escape_string($image) . "', " .
+			"'" . mysqli_real_escape_string($session) . "', " .
+			"'" . mysqli_real_escape_string($board) . "', " .
 			    . $locationX . ", " .
 			    . $locationY . ", " .
 			    . $sizeX . ", " .
@@ -69,34 +72,41 @@ class Piece {
 	}
 
 	public static function findByImage($image) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE image = " . $image);
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("SELECT * FROM a6_Piece WHERE image = \"" . $image . "\"");
 		if ($result) {
 			if ($result->num_rows == 0) {
 				return null;
 			}
-			$info = $result->fetch_array();
+			$row = $result->fetch_array();
 			return new Piece(
-							$info['image']),
-							$info['session'],
-							$info['board'],
-							intval($info['locationX']),
-							intval($info['locationY']),
-							intval($info['sizeX']),
-							intval($info['sizeY'])
-							);
+				$row['image']),
+				$row['session'],
+				intval($row['board']),
+				intval($row['locationX']),
+				intval($row['locationY']),
+				intval($row['sizeX']),
+				intval($row['sizeY'])
+			);
 		}
 		return null;
 	}
 
 	public static function getAllPieces() {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Piece ORDER BY image");
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("SELECT * FROM a6_Piece ORDER BY image");
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$pieces = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$pieces[$index] = new User($all[$index]['image'],$all[$index]['session'],$all[$index]['board'], $all[$index]['locationX'],$all[$index]['locationY'],$all[$index]['sizeX'],$all[$index]['sizeY']);
+		while($row = mysqli_fetch_array($result)) {
+			$pieces[] = new Piece(
+				$row['image'],
+				$row['session'],
+				intval($row['board']),
+				intval($row['locationX']),
+				intval($row['locationY']),
+				intval($row['sizeX']),
+				intval($row['sizeY'])
+			);
 		}
 
 		return $pieces;
@@ -106,10 +116,17 @@ class Piece {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE session = " . $session);
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$pieces = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$pieces[$index] = new User($all[$index]['image'],$all[$index]['session'],$all[$index]['board'], $all[$index]['locationX'],$all[$index]['locationY'],$all[$index]['sizeX'],$all[$index]['sizeY']);
+		while($row = mysqli_fetch_array($result)) {
+			$pieces[] = new Piece(
+				$row['image'],
+				$row['session'],
+				intval($row['board']),
+				intval($row['locationX']),
+				intval($row['locationY']),
+				intval($row['sizeX']),
+				intval($row['sizeY'])
+			);
 		}
 
 		return $pieces;
@@ -119,10 +136,17 @@ class Piece {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE board = " . $board);
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$pieces = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$pieces[$index] = new User($all[$index]['image'],$all[$index]['session'],$all[$index]['board'], $all[$index]['locationX'],$all[$index]['locationY'],$all[$index]['sizeX'],$all[$index]['sizeY']);
+		while($row = mysqli_fetch_array($result)) {
+			$pieces[] = new Piece(
+				$row['image'],
+				$row['session'],
+				intval($row['board']),
+				intval($row['locationX']),
+				intval($row['locationY']),
+				intval($row['sizeX']),
+				intval($row['sizeY'])
+			);
 		}
 
 		return $pieces;
@@ -132,10 +156,17 @@ class Piece {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE locationX = " . $locationX . " AND locationY = " . $locationY);
 
-		$all = mysqli_fetch_all($result, MYSQLI_NUM);
 		$pieces = array();
-		for ($index = 0; $index < sizeof($all); $index++) {
-			$pieces[$index] = new User($all[$index]['image'],$all[$index]['session'],$all[$index]['board'], $all[$index]['locationX'],$all[$index]['locationY'],$all[$index]['sizeX'],$all[$index]['sizeY']);
+		while($row = mysqli_fetch_array($result)) {
+			$pieces[] = new Piece(
+				$row['image'],
+				$row['session'],
+				intval($row['board']),
+				intval($row['locationX']),
+				intval($row['locationY']),
+				intval($row['sizeX']),
+				intval($row['sizeY'])
+			);
 		}
 
 		return $pieces;
@@ -181,14 +212,27 @@ class Piece {
 	}
 
 	public function update() {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("UPDATE a6_Piece SET locationX = ". $this->locationX . ", locationY = " . $this->locationY . ", sizeX = " . $this->sizeX . ", sizeY = " . $this->sizeY . " WHERE image = " . $this->image);
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$result = $db->query("UPDATE a6_Piece SET locationX = ". $this->locationX . ", locationY = " . $this->locationY . ", sizeX = " . $this->sizeX . ", sizeY = " . $this->sizeY . " WHERE image = \"" . $this->image . "\"");
 		return $result;
 	}
 
 	public function delete() {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$mysqli->query("DELETE FROM a6_Piece WHERE image = " . $this->image);
+		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$db->query("DELETE FROM a6_Piece WHERE image = \"" . $this->image . "\"");
+	}
+
+	public function getJSON() {
+		$json_obj = array(
+			'image' => $this->name,
+			'session' => $this->session,
+			'board' => $this->board,
+			'locationX' => $this->locationX,
+			'locationY' => $this->locationY,
+			'sizeX' => $this->sizeX,
+			'sizeY' => $this->sizeY
+		);
+		return json_encode($json_obj);
 	}
 }
 ?>

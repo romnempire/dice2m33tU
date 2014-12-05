@@ -1,7 +1,8 @@
 {
     "autoload": {
         "psr-0": {
-            "ChatServer": "lib"
+            "ChatServer": "lib",
+            "orm\\": "lib/orm/"
         }
     },
     "require": {

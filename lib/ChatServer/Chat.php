@@ -2,16 +2,15 @@
 namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use lib\orm\Message.php;
-require_once ('lib/orm/Message.php');
+require_once 'lib/orm/Message.php';
 
 class Chat implements MessageComponentInterface {
     protected $clients;
-    protected $session = 'pets'; // <-- CHANGE Roman :3
+    protected $date;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
-        date_default_timezone_set('America/New_York');
+        $date = new \DateTime('America/New_York');
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -19,34 +18,17 @@ class Chat implements MessageComponentInterface {
         $this->clients->attach($conn);
 
         echo "New connection! ({$conn->resourceId})\n";
-
-        // $this->dumpChatBacklog($conn);
-        // $this->newDumpChatBacklog($conn);
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $jsonmsg = json_decode($msg);
         if ($jsonmsg->cmdType == 'message') {
-            $numRecv = count($this->clients) - 1;
-            echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-                , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
-
-            foreach ($this->clients as $client) {
-                if ($from !== $client) {
-                    // The sender is not the receiver, send to each client connected
-                    $client->send($msg);
-                }
-            }
+            $this->processInboundMessage($from, $jsonmsg);
         } else if ($jsonmsg->cmdType == 'backlog') {
-            $this->dumpChatBacklog($from);
+            $this->dumpChatBacklog($from, $jsonmsg);
         } else if ($jsonmsg->cmdType == 'diceroll') {
             $this->rollDice($from, $jsonmsg);
         }
-        //update database
-        //should know session
-        //get timestamp
-        $date = new DateTime();
-        Message::create($session, '00:00:00', "hissss", "cat");
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -62,46 +44,43 @@ class Chat implements MessageComponentInterface {
         $conn->close();
     }
 
+    public function processInboundMessage(ConnectionInterface $conn, $msg) {
+        $PHPMessage = \orm\Message::create($msg->session, $date->getTimestamp(), $msg->text, $msg->user);
 
-	// turn to ORM
-/*
-    public function dumpChatBacklog(ConnectionInterface $conn) {
-        $dbhost = 'classroom.cs.unc.edu';
-        $dbuser = 'serust';
-        $dbpass = 'CH@ngemenow99Please!serust';
-        $dbname = 'serustdb';
-        $dbconn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die ('Error connecting to mysql');
-        echo "connected to db \n";
+        $data = array(
+            "cmdType" => "message",
+            "timestamp" => $PHPMessage->getTimestamp(),
+            "text" => $PHPMessage->getText(),
+            "user" => $PHPMessage->getUser()
+        );
 
-        $query = "SELECT timestamp, text, user FROM a6_Message WHERE a6_Message.session = \"pets\"";
-//        $insertquery = "INSERT INTO a6_Message(mid, Session, Timestamp, Text, User)".
-//            " VALUES(1,\"pets\", \"1000-01-01 00:00:00\", \"doge goes woofe\", \"DOGE\")";
-        $result = $dbconn->query($query) or die("Error in the consult.." . mysqli_error($dbconn));
-        while($row = mysqli_fetch_array($result)) {
-            $data = array("cmdType" => "message",
-                          "timestamp" => $row["timestamp"],
-                          "text" => $row["text"],
-                          "user" => $row["user"]);
-            $conn->send(json_encode($data));
-            //echo $row["text"] . "<br>";
+        $numRecv = count($this->clients) - 1;
+        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+
+        foreach ($this->clients as $client) {
+            if ($from !== $client) {
+                // The sender is not the receiver, send to each client connected
+                $client->send(json_encode($data));
+            }
         }
-
     }
-*/
-	public function dumpChatBacklog(ConnectionInterface $conn) {
-		$messages = Message::findBySession($session);
-    for ($index = 0; $index < sizeof($messages); $index++) {
-      	$data = array(
+
+	public function dumpChatBacklog(ConnectionInterface $conn, $msg) {
+		$session = $msg->session;
+		$messages = \orm\Message::findBySession($session);
+    	for ($index = 0; $index < sizeof($messages); $index++) {
+      		$data = array(
        			"cmdType" => "message",
         		"timestamp" => $messages[$index]->getTimestamp(),
         		"text" => $messages[$index]->getText(),
         		"user" => $messages[$index]->getUser()
-      	);
-      	$conn->send(json_encode($data));
+      		);
+      		$conn->send(json_encode($data));
     	}
   	}
 
     public function rollDice(ConnectionInterface $conn, $msg) {
-        console.log('diceroll');
+        echo 'diceroll \n';
     }
 }
