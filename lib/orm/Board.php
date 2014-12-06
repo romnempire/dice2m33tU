@@ -52,8 +52,8 @@ class Board {
 		$result = $db->query("INSERT INTO a6_Board (session, background, length, width) VALUES ( " .
 			"\"" . mysqli_real_escape_string($session) . "\", " .
 			"\"" . mysqli_real_escape_string($background) . "\", " .
-				  $length . ", " .
-				. $width . ")"
+				  $length   . ", " .
+				  $width    . ")"
 			);
 		if ($result) {
 			$bid = $db->insert_id;

@@ -22,7 +22,7 @@ class Session {
 
 	public static function create($url) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("INSERT INTO a6_Session VALUES (" . "'" . mysqli_real_escape_string($url) . "'" . ")");
+		$result = $db->query("INSERT INTO a6_Session VALUES (" . "\"" . mysqli_real_escape_string($url) . "\"" . ")");
 		if ($result) {
 			return new Session($url);
 		}
@@ -31,7 +31,7 @@ class Session {
 
 	public static function findByURL($url) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("SELECT * FROM a6_Session WHERE url = " . "'" . mysqli_real_escape_string($url) . "'");
+		$result = $db->query("SELECT * FROM a6_Session WHERE url = " . "\"" . mysqli_real_escape_string($url) . "\"");
 		if ($result) {
 			if ($result->num_rows == 0) {
 				return null;
@@ -52,7 +52,7 @@ class Session {
 
 	public function delete() {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$db->query("DELETE FROM a6_Session WHERE url = " . $this->url);
+		$db->query("DELETE FROM a6_Session WHERE url = \"" . $this->url . "\"");
 	}
 
 	public function getJSON() {

@@ -32,11 +32,11 @@ class User {
 	public static function create($name, $session) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $db->query("INSERT INTO a6_User VALUES (" .
-			"'" . mysqli_real_escape_string($name) . "', " .
-			"'" . mysqli_real_escape_string($session) . "')";
+			"\"" . mysqli_real_escape_string($name) . "\", " .
+			"\"" . mysqli_real_escape_string($session) . "\")"
 			);
 		if ($result) {
-			return new Board($name, $session);
+			return new User($name, $session);
 		}
 		return null;
 	}
@@ -65,7 +65,7 @@ class User {
 			while ($row = mysqli_fetch_array($result)) {
 				$messages[] = new User(
 					$row['name'],
-					$row['session'],
+					$row['session']
 				);
 			}
 
@@ -80,7 +80,7 @@ class User {
 			while ($row = mysqli_fetch_array($result)) {
 				$messages[] = new User(
 					$row['name'],
-					$row['session'],
+					$row['session']
 				);
 			}
 
@@ -102,7 +102,7 @@ class User {
 
 	public function delete() {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$mysqli->query("DELETE FROM a6_User WHERE name = " . $this->name);
+		$mysqli->query("DELETE FROM a6_User WHERE name = \"" . $this->name . "\"");
 	}
 
 	public function getJSON() {

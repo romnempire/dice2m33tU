@@ -57,13 +57,13 @@ class Piece {
 	public static function create($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $db->query("INSERT INTO a6_Piece VALUES (" .
-			"'" . mysqli_real_escape_string($image) . "', " .
-			"'" . mysqli_real_escape_string($session) . "', " .
-			"'" . mysqli_real_escape_string($board) . "', " .
-			    . $locationX . ", " .
-			    . $locationY . ", " .
-			    . $sizeX . ", " .
-			    . $sizeY . ")"
+			"\"" . mysqli_real_escape_string($image)    . "\", " .
+			"\"" . mysqli_real_escape_string($session)  . "\", " .
+			"\"" . mysqli_real_escape_string($board)    . "\", " .
+			      $locationX    . ", " .
+			      $locationY    . ", " .
+			      $sizeX        . ", " .
+			      $sizeY        . ")"
 			);
 		if ($result) {
 			return new Piece($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
@@ -80,7 +80,7 @@ class Piece {
 			}
 			$row = $result->fetch_array();
 			return new Piece(
-				$row['image']),
+				$row['image'],
 				$row['session'],
 				intval($row['board']),
 				intval($row['locationX']),
@@ -114,7 +114,7 @@ class Piece {
 
 	public static function findBySession($session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE session = " . $session);
+		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE session = \"" . $session . "\"");
 
 		$pieces = array();
 		while($row = mysqli_fetch_array($result)) {

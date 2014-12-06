@@ -43,10 +43,10 @@ class Message {
 	public static function create($session, $timestamp, $text, $user) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
         $querystring = "INSERT INTO a6_Message (session, timestamp, text, user) VALUES ( " .
-            "'" . $db->real_escape_string($session)     . "', " .
-            "'" . $db->real_escape_string($timestamp)   . "', " .
-            "'" . $db->real_escape_string($text)        . "', " .
-            "'" . $db->real_escape_string($user)        . "')";
+            "\"" . $db->real_escape_string($session)     . "\", " .
+            "\"" . $db->real_escape_string($timestamp)   . "\", " .
+            "\"" . $db->real_escape_string($text)        . "\", " .
+            "\"" . $db->real_escape_string($user)        . "\")";
 		$result = $db->query($querystring);
 		if ($result) {
 			$mid = $db->insert_id;
