@@ -1,5 +1,7 @@
 <?php
 
+namespace orm;
+
 // Piece Interface
 //
 // if the row can be inserted, then create returns a Piece object
@@ -56,15 +58,15 @@ class Piece {
 
 	public static function create($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("INSERT INTO a6_Piece VALUES (" .
-			"\"" . mysqli_real_escape_string($image)    . "\", " .
-			"\"" . mysqli_real_escape_string($session)  . "\", " .
-			"\"" . mysqli_real_escape_string($board)    . "\", " .
-			      $locationX    . ", " .
-			      $locationY    . ", " .
-			      $sizeX        . ", " .
-			      $sizeY        . ")"
-			);
+        $querystring = "INSERT INTO a6_Piece VALUES (" .
+            "'" . $db->real_escape_string($image) . "', " .
+            "'" . $db->real_escape_string($session) . "', " .
+            "'" . $db->real_escape_string($board) . "', " .
+                 $locationX . ", " .
+                 $locationY . ", " .
+                 $sizeX . ", " .
+                 $sizeY . ")";
+		$result = $db->query($querystring);
 		if ($result) {
 			return new Piece($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
 		}

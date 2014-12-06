@@ -3,6 +3,7 @@ namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 require_once 'lib/orm/Message.php';
+require_once 'lib/orm/Piece.php';
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -19,13 +20,19 @@ class Chat implements MessageComponentInterface {
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        $jsonmsg = json_decode($msg);
-        if ($jsonmsg->cmdType == 'message') {
-            $this->processInboundMessage($from, $jsonmsg);
-        } else if ($jsonmsg->cmdType == 'backlog') {
-            $this->dumpChatBacklog($from, $jsonmsg);
-        } else if ($jsonmsg->cmdType == 'diceroll') {
-            $this->rollDice($from, $jsonmsg);
+
+        $msgobj = json_decode($msg);
+
+        if ($msgobj->cmdType == 'message') {
+            $this->processInboundMessage($from, $msgobj);
+        } else if ($msgobj->cmdType == 'backlog') {
+            $this->dumpChatBacklog($from, $msgobj);
+        } else if ($msgobj->cmdType == 'diceroll') {
+            $this->rollDice($from, $msgobj);
+        } else if ($msgobj->cmdType == 'newtoy') {
+            $this->processInboundToy($from, $msgobj, $msg);
+        } else if ($msgobj->cmdType == 'toymove') {
+            $this->processInboundToyMove($from, $msgobj);
         }
     }
 
@@ -60,8 +67,8 @@ class Chat implements MessageComponentInterface {
         }
     }
 
-	public function dumpChatBacklog(ConnectionInterface $conn, $msg) {
-		$session = $msg->session;
+	public function dumpChatBacklog(ConnectionInterface $conn, $msgobj) {
+		$session = $msgobj->session;
 		$messages = \orm\Message::findBySession($session);
     	for ($index = 0; $index < sizeof($messages); $index++) {
       		$data = array(
@@ -74,7 +81,74 @@ class Chat implements MessageComponentInterface {
     	}
   	}
 
+    //not finished
     public function rollDice(ConnectionInterface $conn, $msg) {
-        echo 'diceroll \n';
+        echo "diceroll \n";
+        //generate randoms
+
+        //post to database
+
+        //create and send outbound diceroll
+        $data = array(
+            "cmdType" => "message",
+            "timestamp" => $PHPMessage->getTimestamp(),
+            "text" => $PHPMessage->getText(),
+            "user" => $PHPMessage->getUser()
+        );
+
+        foreach ($this->clients as $client) {
+            $client->send(json_encode($data));
+        }
+    }
+
+    public function processInboundToy($from, $msgobj, $msg) {
+        echo "new toy! \n";
+
+        //post to database
+        $piece = \orm\Piece::create($msgobj->url, $msgobj->session, 0, 0, 0, 100, 100);
+        //create and send outbound toy
+        //you don't actually use this because it literally recreates your input
+        $data = array(
+            "cmdType" => "newtoy",
+            "user" => $msgobj->user,
+            "session" => $piece->getSession(),
+            "url" => $piece->getImage()
+        );
+
+        foreach ($this->clients as $client) {
+            $client->send($msg);
+        }
+    }
+
+    //not finished
+    public function processInboundToyLock($from, $msgobj) {
+        echo "toy lock \n";
+
+        //create and send outbound toy move
+        $data = array(
+            "cmdType" => "toylock",
+            "url" => $piece->getImage()
+        );
+
+        foreach ($this->clients as $client) {
+            if ($from !== $client) {
+                $client->send(json_encode($data));
+            }
+        }
+    }
+
+    //not finished
+    public function processInboundToyMove($from, $msgobj) {
+        echo "toy move \n";
+        //edit in database
+
+        //create and send outbound toy move
+        $data = array(
+            "cmdType" => "toymove"
+        );
+
+        foreach ($this->clients as $client) {
+            $client->send(json_encode($data));
+        }
     }
 }

@@ -12,8 +12,10 @@ conn.onmessage = function(e) {
             processInboundMessage(data);
         } else if (data.cmdType === 'mapmove') {
             processInboundMapMove(data);
+        } else if (data.cmdType === 'newtoy') {
+            processInboundToy(data);
         } else if (data.cmdType === 'maplock') {
-            processInboundMapLock(data);
+            processInboundToyLock(data);
         }
     } else {
         console.log('Message Format Mismatch: onmessage');
@@ -44,8 +46,13 @@ function processInboundMapMove(message) {
     }
 };
 
+function processInboundToy(message) {
+    console.log('recieving toy');
+    dropInImage(message.url);
+}
+
 //if another user begins altering a toy, grey it out and make it undraggable
-function processInboundMapLock(message) {
+function processInboundToyLock(message) {
 
 }
 
@@ -62,19 +69,28 @@ function login(user, sesh) {
     conn.send(JSON.stringify(backlogreq));
 };
 
-function processOutboundMapLock(mapobject) {
-    var maplockreq = {'cmdType': 'maplock',
+function processOutboundToy(url) {
+    console.log('sending toy')
+    var maplockreq = {'cmdType': 'newtoy',
                    'user': session.user,
                    'session': session.session,
-                   'mapobject': mapobject };
+                   'url': url };
     conn.send(JSON.stringify(maplockreq));
 };
 
-function processOutboundMapMove(mapobject, top, left) {
+function processOutboundToyLock(url) {
+    var maplockreq = {'cmdType': 'maplock',
+                   'user': session.user,
+                   'session': session.session,
+                   'url': url };
+    conn.send(JSON.stringify(maplockreq));
+};
+
+function processOutboundToyMove(url, top, left) {
     var mapmovereq = {'cmdType': 'mapmove',
                    'user': session.user,
                    'session': session.session,
-                   'mapobject': mapobject,
+                   'url': url,
                    'top': top,
                    'left': left };
     conn.send(JSON.stringify(mapmovereq));
