@@ -1,9 +1,13 @@
 <?php
-  require_once 'orm/Board.php';
+//  require_once 'orm/Board.php';
 ///////////In Test Mode///////////
+  ini_set('display_errors', '1');
+  error_reporting(E_ALL);
+
   $path_components = explode('/', $_SERVER['PATH_INFO']);
 
   if ($_SERVER['REQUEST_METHOD'] == "GET") {
+
     // GET with resource type path return an index of resources
     // parameters can be used to provide filter parameters
 
@@ -14,14 +18,14 @@
     // deletes
 
     //URL form
-    // http://wwwp.cs.unc.edu/Courses/comp426-f14/serust/a8/Map.php/maps/<id>
+    // /Map.php/<id>
 
-    if ((count($path_components) >= 9) && ($path_components[9] != "")) {
+    if ((count($path_components) >= 2) && ($path_components[1] != "")) {
       // interpret <id> as integer
-      $bid = intval($path_components[9]);
+      $bid = intval($path_components[1]);
 
       // Look up object with ORM
-      $board = Board::findByID($bid);
+      //$board = Board::findByID($bid);
 
       if ($bid == null) {
         //Board not found
@@ -32,7 +36,7 @@
 
       // Check if delete
       if (isset($_REQUEST['delete'])) {
-        $board->delete();
+        //$board->delete();
         header("Content-type: application/json");
         print(json_encode(true));
         exit();
@@ -41,23 +45,23 @@
       // Normal lookup
       // Generate JSON encoding as response
       header("Content-type: application/json");
-      print($board->getJSON());
+      //print($board->getJSON());
       exit();
     }
     // ID not specified, then must be asking for index
-    header("Content-type: applicaton/json");
-    print(json_encode(Board::getAllBoards()));
+    header("Content-type: application/json");
+    //print(json_encode(Board::getAllBoards()));
     exit();
 
   } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Either creating or updating
 
     // Matches /Map.php/<id> form
-    if ((count($path_components) >= 9)) && ($path_components[9] != "") {
+    if ((count($path_components) >= 2) && ($path_components[1] != "")) {
 
       //Interpret <id> as integer and look up via ORM
-      $bid = intval($path_components[9]);
-      $board = Board::findByID($bid);
+      $bid = intval($path_components[1]);
+      //$board = Board::findByID($bid);
 
       if ($board == null) {
         // Board not found
@@ -89,18 +93,18 @@
 
       // Update via ORM
       if ($newbackground) {
-        $board->setBackground($newbackground);
+        //$board->setBackground($newbackground);
       }
       if ($newlength) {
-        $board->setLength($newlength);
+        //$board->setLength($newlength);
       }
       if ($newwidth) {
-        $board->setWidth($newwidth);
+        //$board->setWidth($newwidth);
       }
 
       // Return JSON encoding of updated board
       header("Content type: application/json");
-      print($board->getJSON());
+      //print($board->getJSON());
       exit();
     } else {
       // Create new Board item
@@ -131,10 +135,13 @@
       // Create new Board via ORM
       $session = "pets"; ///////REPLACE/////////
 
-      $board = Board::create($session, $background, $length, $width);
+      //$board = Board::create($session, $background, $length, $width);
 
       //Report if failed
       if ($board == null) {
+        echo '<script language="javascript">';
+        echo 'alert("merrow")';
+        echo '</script>';
         header("HTTP/1.0 500 Server Error");
         print("Server couldn't create new board");
         exit();
@@ -142,7 +149,7 @@
 
       //Generate JSON encoding of new Board
       header("Content-type: application/JSON");
-      print($board->getJSON());
+      //print($board->getJSON());
       exit();
     }
   }
