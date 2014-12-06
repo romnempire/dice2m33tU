@@ -1,4 +1,4 @@
-var conn = new WebSocket('ws://localhost:8080');
+var conn = new WebSocket('ws://hatch04.cs.unc.edu:8080');
 var session = {};
 
 conn.onopen = function(e) {

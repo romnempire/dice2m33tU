@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" type="text/css" href="css/core.css">
+		
     </head>
 
     <body>
@@ -15,8 +16,6 @@
         <div id="toplinks">
         <center>
         <a href="http://www.cs.unc.edu/Courses/comp426-f14/amrobers/a3/index.html"><div class="toplinks"><br>home</div></a>
-        <a href="http://www.cs.unc.edu/Courses/comp426-f14/amrobers/a3/index.html#about"><div class="toplinks"><br>about</div></a>
-        <a href="http://www.cs.unc.edu/Courses/comp426-f14/amrobers/a3/index.html#contact"><div class="toplinks"><br>more</div></a>
         </center>
         </div>
         </div>
@@ -55,7 +54,7 @@
                 <div id="options">
                     <button type="button" onclick="createURLChooser(this)">Add Toy</button>
                     <button type="button" onclick="$('.griddy').toggle();return false;">Grid</button>
-                    <button type="button" onclick="alert('I like food')">Trashcan</button>
+                    <button type="button" ondrop="drop(event)" ondragover="allowDrop(event)">Trashcan</button>
                 </div>
             </div>
 
@@ -67,16 +66,21 @@
                   <form name="messageform">
                     <input id="blast" type="text" class="form-control" placeholder="send something to everyone" name="chatinput">
                     <span class="input-group-btn">
-                        <button id="send" class="btn btn-success" type="button" onclick="processOutBoundMessage(messageform.blast.value, Date.now());">Send</button>
+                        <button id="send" type="button" onclick="processOutboundMessage(
+                            messageform.blast.value,
+                            Date.now()
+                        );">Send</button>
                     </span>
                   </form>
                 </div>
                 <div id="login">
                     <form id="loginform">
-                    <input type="text" name="name">Name
-                    <br>
-                    <input type="text" name="session">Session
-                        <button type="button"
+                    Name:  <br><input type="text" id ="namefield" name="name">
+                    <br><br>
+                    Session: <br><input type="text" id="sessionfield" name="session">
+                        <br><br><br>
+						
+						<button type="button" id="loginbutton"
                         onclick="login(
                           document.forms['loginform'].elements['name'].value,
                           document.forms['loginform'].elements['session'].value

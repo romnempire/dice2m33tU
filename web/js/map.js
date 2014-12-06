@@ -4,6 +4,7 @@ function dropInImage(url) {
         stop: handleDragStop, drag: handleDragDrag });
     $('draggable').on()
     $('#urlchooser').remove();
+	//$( '.toy').draggable( {ondragstart=drag} );
 }
 
 function createURLChooser(_this) {
@@ -60,9 +61,28 @@ function handleDragDrag( e, ui ) {
     }
 }
 
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    
+	if ($(this).attr('id') === 'toy draggable') {
+		var data = ev.dataTransfer.getData("text");
+		ev.target.appendChild(document.getElementById(data)).remove();
+	}
+	
+}
+
 function handleDragStop( e, ui ) {
     $( '#map, #toybox' ).droppable({ disabled: false });
 }
 
 $( '#map, #toybox' ).droppable({ accept: ".toy", drop: handleDropEvent });
-$( '#toybox').draggable( {containment: 'parent'});
+$( '#toybox').draggable( {containment: 'parent'}); 
