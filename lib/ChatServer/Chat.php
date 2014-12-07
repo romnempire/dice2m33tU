@@ -3,7 +3,7 @@ namespace ChatServer;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 require_once 'lib/orm/Message.php';
-require_once 'lib/orm/Piece.php';
+require_once 'lib/orm/Toy.php';
 
 class Chat implements MessageComponentInterface {
     protected $clients;
@@ -105,14 +105,16 @@ class Chat implements MessageComponentInterface {
         echo "new toy! \n";
 
         //post to database
-        $piece = \orm\Piece::create($msgobj->url, $msgobj->session, 0, 0, 0, 100, 100);
+        //IF THE PIECE IS THERE GET IT INSTEAD OF CREATING IT
+        $toy = \orm\Toy::create($msgobj->url, $msgobj->session, 0, 0, 0, 10, 100);
+
         //create and send outbound toy
         //you don't actually use this because it literally recreates your input
         $data = array(
             "cmdType" => "newtoy",
             "user" => $msgobj->user,
-            "session" => $piece->getSession(),
-            "url" => $piece->getImage()
+            "session" => $toy->getSession(),
+            "url" => $toy->getURL()
         );
 
         foreach ($this->clients as $client) {
@@ -127,7 +129,7 @@ class Chat implements MessageComponentInterface {
         //create and send outbound toy move
         $data = array(
             "cmdType" => "toylock",
-            "url" => $piece->getImage()
+            "url" => $toy->getURL()
         );
 
         foreach ($this->clients as $client) {

@@ -5,13 +5,13 @@ namespace orm;
 // Piece Interface
 //
 // if the row can be inserted, then create returns a Piece object
-// public static function create($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
+// public static function create($url, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
 //
 // if image exists, findByImage returns the Piece object
-// public static function findByImage($image);
+// public static function findByID($tid);
 //
 // getAllPieces returns an array
-// public static function getAllPieces();
+// public static function getAllToys();
 //
 // findBySession returns an array
 // public static function findBySession($session);
@@ -23,7 +23,9 @@ namespace orm;
 // public static function findByLocation($locationX, $locationY);
 //
 // private constructor, called when row can be inserted
-// private function __construct($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
+// private function __construct($tid, $url, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
+//
+// public function getID();
 //
 // public function getImage();
 //
