@@ -31,8 +31,10 @@ class Chat implements MessageComponentInterface {
             $this->rollDice($from, $msgobj);
         } else if ($msgobj->cmdType == 'newtoy') {
             $this->processInboundToy($from, $msgobj, $msg);
+        } else if ($msgobj->cmdType == 'toylock') {
+            $this->processInboundToyLock($from, $msgobj, $msg);
         } else if ($msgobj->cmdType == 'toymove') {
-            $this->processInboundToyMove($from, $msgobj);
+            $this->processInboundToyMove($from, $msgobj, $msg);
         }
     }
 
@@ -110,47 +112,62 @@ class Chat implements MessageComponentInterface {
 
         //create and send outbound toy
         //you don't actually use this because it literally recreates your input
+        //it just tests the orm
         $data = array(
             "cmdType" => "newtoy",
             "user" => $msgobj->user,
             "session" => $toy->getSession(),
-            "url" => $toy->getURL()
+            "url" => $toy->getURL(),
+            "tid" => $toy->getID()
         );
 
         foreach ($this->clients as $client) {
-            $client->send($msg);
+            $client->send(json_encode($data));
         }
     }
 
     //not finished
-    public function processInboundToyLock($from, $msgobj) {
+    public function processInboundToyLock($from, $msgobj, $msg) {
         echo "toy lock \n";
 
+        $toy = \orm\Toy::findByID($msgobj->tid);
+
         //create and send outbound toy move
+        //you don't actually use this because it literally recreates your input
+        //it just tests the orm
         $data = array(
             "cmdType" => "toylock",
-            "url" => $toy->getURL()
+            "user" => $msgobj->user,
+            "session" => $toy->getSession(),
+            "tid" => $toy->getID()
         );
 
         foreach ($this->clients as $client) {
             if ($from !== $client) {
-                $client->send(json_encode($data));
+                $client->send($msg);
             }
         }
     }
 
     //not finished
-    public function processInboundToyMove($from, $msgobj) {
+    public function processInboundToyMove($from, $msgobj, $msg) {
         echo "toy move \n";
         //edit in database
 
+        $toy = \orm\Toy::findByID($msgobj->tid);
+
         //create and send outbound toy move
         $data = array(
-            "cmdType" => "toymove"
+            "cmdType" => "toymove",
+            "user" => $msgobj->user,
+            "session" => $toy->getSession(),
+            "tid" => $toy->getID(),
+            "top" => $toy->getLocation()[1],
+            "left" => $toy->getLocation()[0]
         );
 
         foreach ($this->clients as $client) {
-            $client->send(json_encode($data));
+            $client->send($msg);
         }
     }
 }

@@ -316,3 +316,7 @@ button:hover {
 	opacity: .95;
 	border-color: #fff;
 }
+
+.grey {
+    opacity: 0.4;
+}

@@ -1,10 +1,19 @@
-function dropInImage(url) {
-    $('#map').append('<img src=' + url + ' class="toy draggable">');
+function dropInImage(url, tid) {
+    $('#map').append('<img id=' + tid + ' src=' + url + ' class="toy draggable">');
     $('.draggable').draggable({ containment: 'parent', start: handleDragStart,
         stop: handleDragStop, drag: handleDragDrag });
     $('draggable').on()
     $('#urlchooser').remove();
 	//$( '.toy').draggable( {ondragstart=drag} );
+}
+
+function lockImage(tid) {
+    $('#' + tid).draggable('disable').addClass('grey');
+
+}
+
+function moveImage(tid, top, left) {
+    $('#' + tid).draggable('enable').removeClass('grey').css({'top': top, 'left': left});
 }
 
 function createURLChooser(_this) {
@@ -49,6 +58,8 @@ function handleDragStart( e, ui ) {
     if($(this).parent().attr('id') === 'toybox'){
         $( "#map, #toybox" ).droppable({ disabled: true });
     } 
+
+    processOutboundToyLock($(this).attr('id'));
 }
 
 function handleDragDrag( e, ui ) {
@@ -82,6 +93,7 @@ function drop(ev) {
 
 function handleDragStop( e, ui ) {
     $( '#map, #toybox' ).droppable({ disabled: false });
+    processOutboundToyMove($(this).attr('id'),$(this).css('top'), $(this).css('left'));
 }
 
 $( '#map, #toybox' ).droppable({ accept: ".toy", drop: handleDropEvent });

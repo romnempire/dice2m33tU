@@ -10,13 +10,13 @@ conn.onmessage = function(e) {
     if (data.cmdType) {
         if (data.cmdType === 'message') {
             processInboundMessage(data);
-        } else if (data.cmdType === 'mapmove') {
-            processInboundMapMove(data);
         } else if (data.cmdType === 'newtoy') {
             processInboundToy(data);
-        } else if (data.cmdType === 'maplock') {
+        } else if (data.cmdType === 'toylock') {
             processInboundToyLock(data);
-        }
+        } else if (data.cmdType === 'toymove') {
+            processInboundToyMove(data);
+        } 
     } else {
         console.log('Message Format Mismatch: onmessage');
         console.log(e.data);
@@ -36,25 +36,29 @@ function processInboundMessage(message) {
     }
 };
 
-function processInboundMapMove(message) {
-    //it would be a good idea to check if the selected object's class is Toy
-    if (message.id && message.locationX && message.locationY) {
-        $('#' + message.id).css({"left": locationX, "top": locationY});
-    } else {
-        console.log('Message Format Mismatch: processInboundMapMove');
-        console.log(message);
-    }
-};
-
 function processInboundToy(message) {
     console.log('recieving toy');
-    dropInImage(message.url);
+    console.log(message);
+    dropInImage(message.url, message.tid);
 }
 
 //if another user begins altering a toy, grey it out and make it undraggable
 function processInboundToyLock(message) {
-
+    console.log('locking toy');
+    lockImage(message.tid);
 }
+
+function processInboundToyMove(message) {
+    console.log('moving toy');
+    //it would be a good idea to check if the selected object's class is Toy
+    if (message.tid && message.left && message.top) {
+        moveImage(message.tid, message.top, message.left);
+        //$('#' + message.tid).css({"left": locationX, "top": locationY});
+    } else {
+        console.log('Message Format Mismatch: processInboundToyMove');
+        console.log(message);
+    }
+};
 
 //Outbound Functions
 
@@ -78,21 +82,24 @@ function processOutboundToy(url) {
     conn.send(JSON.stringify(maplockreq));
 };
 
-function processOutboundToyLock(url) {
-    var maplockreq = {'cmdType': 'maplock',
+function processOutboundToyLock(tid) {
+    var maplockreq = {'cmdType': 'toylock',
                    'user': session.user,
                    'session': session.session,
-                   'url': url };
+                   'tid': tid
+                    };
+    console.log(maplockreq);
     conn.send(JSON.stringify(maplockreq));
 };
 
-function processOutboundToyMove(url, top, left) {
-    var mapmovereq = {'cmdType': 'mapmove',
+function processOutboundToyMove(tid, top, left) {
+    var mapmovereq = {'cmdType': 'toymove',
                    'user': session.user,
                    'session': session.session,
-                   'url': url,
+                   'tid': tid,
                    'top': top,
                    'left': left };
+    console.log(mapmovereq);
     conn.send(JSON.stringify(mapmovereq));
 };
 
