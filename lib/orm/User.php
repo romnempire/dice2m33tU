@@ -32,8 +32,8 @@ class User {
 	public static function create($name, $session) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $db->query("INSERT INTO a6_User VALUES (" .
-			"\"" . mysqli_real_escape_string($name) . "\", " .
-			"\"" . mysqli_real_escape_string($session) . "\")"
+			"\"" . $db->real_escape_string($name) . "\", " .
+			"\"" . $db->real_escape_string($session) . "\")"
 			);
 		if ($result) {
 			return new User($name, $session);

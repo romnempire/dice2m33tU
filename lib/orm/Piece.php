@@ -47,8 +47,9 @@ namespace orm;
 // public function getJSON();
 
 
-class Piece {
-	private $image;
+class Toy {
+    private $tid;
+	private $url;
 	private $session;
 	private $board;
 	private $locationX;
@@ -56,33 +57,35 @@ class Piece {
 	private $sizeX;
 	private $sizeY;
 
-	public static function create($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY) {
+	public static function create($url, $session, $board, $locationX, $locationY, $sizeX, $sizeY) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-        $querystring = "INSERT INTO a6_Piece VALUES (" .
-            "'" . $db->real_escape_string($image) . "', " .
-            "'" . $db->real_escape_string($session) . "', " .
-            "'" . $db->real_escape_string($board) . "', " .
+        $querystring = "INSERT INTO a6_Toy (url, session, board, locationX, locationY, sizeX, sizeY) VALUES (" .
+            "\"" . $db->real_escape_string($url)        . "\", " .
+            "\"" . $db->real_escape_string($session)    . "\", " .
+            "\"" . $db->real_escape_string($board)      . "\", " .
                  $locationX . ", " .
                  $locationY . ", " .
                  $sizeX . ", " .
                  $sizeY . ")";
 		$result = $db->query($querystring);
 		if ($result) {
-			return new Piece($image, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
+            $tid = $db->insert_id;
+			return new Toy($tid, $url, $session, $board, $locationX, $locationY, $sizeX, $sizeY);
 		}
 		return null;
 	}
 
-	public static function findByImage($image) {
+	public static function findByID($tid) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("SELECT * FROM a6_Piece WHERE image = \"" . $image . "\"");
+		$result = $db->query("SELECT * FROM a6_Toy WHERE tid = " . $tid);
 		if ($result) {
 			if ($result->num_rows == 0) {
 				return null;
 			}
 			$row = $result->fetch_array();
-			return new Piece(
-				$row['image'],
+			return new Toy(
+                intval($row['tid']),
+				$row['url'],
 				$row['session'],
 				intval($row['board']),
 				intval($row['locationX']),
@@ -94,14 +97,15 @@ class Piece {
 		return null;
 	}
 
-	public static function getAllPieces() {
+	public static function getAllToys() {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("SELECT * FROM a6_Piece ORDER BY image");
+		$result = $db->query("SELECT * FROM a6_Toy ORDER BY tid");
 
-		$pieces = array();
+		$toys = array();
 		while($row = mysqli_fetch_array($result)) {
-			$pieces[] = new Piece(
-				$row['image'],
+			$toys[] = new Toy(
+                intval($row['tid']),
+				$row['url'],
 				$row['session'],
 				intval($row['board']),
 				intval($row['locationX']),
@@ -111,81 +115,94 @@ class Piece {
 			);
 		}
 
-		return $pieces;
+		return $toys;
 	}
 
 	public static function findBySession($session) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE session = \"" . $session . "\"");
+		$result = $mysqli->query("SELECT * FROM a6_Toy WHERE session = \"" . $session . "\"");
 
-		$pieces = array();
-		while($row = mysqli_fetch_array($result)) {
-			$pieces[] = new Piece(
-				$row['image'],
-				$row['session'],
-				intval($row['board']),
-				intval($row['locationX']),
-				intval($row['locationY']),
-				intval($row['sizeX']),
-				intval($row['sizeY'])
-			);
-		}
+        $toys = array();
+        while($row = mysqli_fetch_array($result)) {
+            $toys[] = new Toy(
+                intval($row['tid']),
+                $row['url'],
+                $row['session'],
+                intval($row['board']),
+                intval($row['locationX']),
+                intval($row['locationY']),
+                intval($row['sizeX']),
+                intval($row['sizeY'])
+            );
+        }
 
-		return $pieces;
+        return $toys;
 	}
 
 	public static function findByBoard($board) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE board = " . $board);
+		$result = $mysqli->query("SELECT * FROM a6_Toy WHERE board = " . $board);
 
-		$pieces = array();
-		while($row = mysqli_fetch_array($result)) {
-			$pieces[] = new Piece(
-				$row['image'],
-				$row['session'],
-				intval($row['board']),
-				intval($row['locationX']),
-				intval($row['locationY']),
-				intval($row['sizeX']),
-				intval($row['sizeY'])
-			);
-		}
+        $toys = array();
+        while($row = mysqli_fetch_array($result)) {
+            $toys[] = new Toy(
+                intval($row['tid']),
+                $row['url'],
+                $row['session'],
+                intval($row['board']),
+                intval($row['locationX']),
+                intval($row['locationY']),
+                intval($row['sizeX']),
+                intval($row['sizeY'])
+            );
+        }
 
-		return $pieces;
+        return $toys;
 	}
 
 	public static function findByLocation($locationX, $locationY) {
 		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $mysqli->query("SELECT * FROM a6_Piece WHERE locationX = " . $locationX . " AND locationY = " . $locationY);
+		$result = $mysqli->query("SELECT * FROM a6_Toy WHERE locationX = " . $locationX . " AND locationY = " . $locationY);
 
-		$pieces = array();
-		while($row = mysqli_fetch_array($result)) {
-			$pieces[] = new Piece(
-				$row['image'],
-				$row['session'],
-				intval($row['board']),
-				intval($row['locationX']),
-				intval($row['locationY']),
-				intval($row['sizeX']),
-				intval($row['sizeY'])
-			);
-		}
+        $toys = array();
+        while($row = mysqli_fetch_array($result)) {
+            $toys[] = new Toy(
+                intval($row['tid']),
+                $row['url'],
+                $row['session'],
+                intval($row['board']),
+                intval($row['locationX']),
+                intval($row['locationY']),
+                intval($row['sizeX']),
+                intval($row['sizeY'])
+            );
+        }
 
-		return $pieces;
+        return $toys;
 	}
 
-	private function __construct($name, $session, $locationX, $locationY, $sizeX, $sizeY) {
-		$this->name = $name;
+	private function __construct($tid, $url, $session, $board, $locationX, $locationY, $sizeX, $sizeY) {
+		$this->tid = $tid;
+        $this->url = $url;
 		$this->session = $session;
+        $this->board = $board;
 		$this->locationX = $locationX;
 		$this->locationY = $locationY;
 		$this->sizeX = $sizeX;
 		$this->sizeY = $sizeY;
 	}
 
-	public function getImage() {
-		return $this->image;
+    public function getID() {
+        return $this->tid;
+    }
+
+	public function getURL() {
+		return $this->url;
 	}
+
+    public function getBoard() {
+        return $this->board;
+    }
 
 	public function getSession() {
 		return $this->session;
@@ -215,18 +232,24 @@ class Piece {
 
 	public function update() {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("UPDATE a6_Piece SET locationX = ". $this->locationX . ", locationY = " . $this->locationY . ", sizeX = " . $this->sizeX . ", sizeY = " . $this->sizeY . " WHERE image = \"" . $this->image . "\"");
+		$result = $db->query("UPDATE a6_Toy SET "  .
+		    "locationX = "      . $this->locationX .
+            ", locationY = "    . $this->locationY .
+            ", sizeX = "        . $this->sizeX .
+            ", sizeY = "        . $this->sizeY .
+            " WHERE tid = "     . $this->tid);
 		return $result;
 	}
 
 	public function delete() {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$db->query("DELETE FROM a6_Piece WHERE image = \"" . $this->image . "\"");
+		$db->query("DELETE FROM a6_Toy WHERE tid = " . $this->tid . "");
 	}
 
 	public function getJSON() {
 		$json_obj = array(
-			'image' => $this->name,
+            'tid' => $this->tid,
+			'url' => $this->url,
 			'session' => $this->session,
 			'board' => $this->board,
 			'locationX' => $this->locationX,

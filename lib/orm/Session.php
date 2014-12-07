@@ -18,46 +18,46 @@
 // public function getJSON();
 
 class Session {
-	private $url;
+	private $name;
 
-	public static function create($url) {
+	public static function create($name) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("INSERT INTO a6_Session VALUES (" . "\"" . mysqli_real_escape_string($url) . "\"" . ")");
+		$result = $db->query("INSERT INTO a6_Session VALUES (" . "\"" . $db->real_escape_string($name) . "\"" . ")");
 		if ($result) {
-			return new Session($url);
+			return new Session($name);
 		}
 		return null;
 	}
 
-	public static function findByURL($url) {
+	public static function findByName($name) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("SELECT * FROM a6_Session WHERE url = " . "\"" . mysqli_real_escape_string($url) . "\"");
+		$result = $db->query("SELECT * FROM a6_Session WHERE name = " . "\"" . $db->real_escape_string($name) . "\"");
 		if ($result) {
 			if ($result->num_rows == 0) {
 				return null;
 			}
 			$row = $result->fetch_array();
-			return new Session($row['url']);
+			return new Session($row['name']);
 		}
 		return null;
 	}
 
-	private function __construct($url) {
-		$this->url = $url;
+	private function __construct($name) {
+		$this->url = $name;
 	}
 
-	public function getURL() {
-		return $this->url;
+	public function getName() {
+		return $this->name;
 	}
 
 	public function delete() {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$db->query("DELETE FROM a6_Session WHERE url = \"" . $this->url . "\"");
+		$db->query("DELETE FROM a6_Session WHERE name = \"" . $this->name . "\"");
 	}
 
 	public function getJSON() {
 		$json_obj = array(
-			'url' => $this->url
+			'name' => $this->name
 		);
 		return json_encode($json_obj);
 	}

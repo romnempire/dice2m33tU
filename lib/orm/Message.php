@@ -64,7 +64,7 @@ class Message {
 			}
 			$row = mysqli_fetch_array($result);
 			return new Message(
-							$row['mid'],
+							intval($row['mid']),
 							$row['session'],
 							$row['timestamp'],
 							$row['text'],
@@ -82,7 +82,7 @@ class Message {
 		$messages = array();
 		while ($row = mysqli_fetch_array($result)) {
 			$messages[] = new Message(
-				$row['mid'],
+				intval($row['mid']),
 				$row['session'],
 				$row['timestamp'],
 				$row['text'],
@@ -100,7 +100,7 @@ class Message {
 		$messages = array();
 		while ($row = mysqli_fetch_array($result)) {
 			$messages[] = new Message(
-				$row['mid'],
+				intval($row['mid']),
 				$row['session'],
 				$row['timestamp'],
 				$row['text'],

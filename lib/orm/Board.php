@@ -50,8 +50,8 @@ class Board {
 	public static function create($session, $background, $length, $width) {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $db->query("INSERT INTO a6_Board (session, background, length, width) VALUES ( " .
-			"\"" . mysqli_real_escape_string($session) . "\", " .
-			"\"" . mysqli_real_escape_string($background) . "\", " .
+			"\"" . $db->real_escape_string($session) . "\", " .
+			"\"" . $db->real_escape_string($background) . "\", " .
 				  $length   . ", " .
 				  $width    . ")"
 			);
