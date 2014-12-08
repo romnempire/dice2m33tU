@@ -1,15 +1,13 @@
 function dropInImage(url, tid) {
-    $('#map').append('<img id=' + tid + ' src=' + url + ' class="toy draggable">');
+    $('#map').append('<img id=' + tid + ' src=' + url + ' class="toy draggable" >');
     $('.draggable').draggable({ containment: 'parent', start: handleDragStart,
         stop: handleDragStop, drag: handleDragDrag });
-    $('draggable').on()
+    $('draggable').on();
     $('#urlchooser').remove();
-	//$( '.toy').draggable( {ondragstart=drag} );
 }
 
 function lockImage(tid) {
     $('#' + tid).draggable('disable').addClass('grey');
-
 }
 
 function moveImage(tid, top, left) {
@@ -38,13 +36,16 @@ function handleDropEvent( e, ui ) {
     if($(this).attr('id') === 'toybox') {
         draggable.css({left: draggable.position().left - $('#toybox').position().left, 
             top: draggable.position().top - $('#toybox').position().top - $('#toybox > h2').height() - 40});
+        $(this).append(draggable);
     } else if ($(this).attr('id') === 'map') {
         draggable.css({left: draggable.position().left + $('#toybox').position().left,
             top: draggable.position().top});
+        $(this).append(draggable);  
+    } else if ($(this).attr('id') === 'trashcan') {
+            draggable.remove();
     } else {
         draggable.css({left: '0px', top:'0px'});
     }
-    $(this).append(draggable);
     //draggable.draggable({ containment: 'parent'});
 }
 
@@ -72,29 +73,10 @@ function handleDragDrag( e, ui ) {
     }
 }
 
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-
-
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-    ev.preventDefault();
-    
-	if ($(this).attr('id') === 'toy draggable') {
-		var data = ev.dataTransfer.getData("text");
-		ev.target.appendChild(document.getElementById(data)).remove();
-	}
-	
-}
-
 function handleDragStop( e, ui ) {
     $( '#map, #toybox' ).droppable({ disabled: false });
     processOutboundToyMove($(this).attr('id'),$(this).css('top'), $(this).css('left'));
 }
 
-$( '#map, #toybox' ).droppable({ accept: ".toy", drop: handleDropEvent });
-$( '#toybox').draggable( {containment: 'parent'}); 
+$( '#map, #toybox, #trashcan' ).droppable({ accept: ".toy", drop: handleDropEvent });
+$( '#toybox').draggable({containment: 'parent'});

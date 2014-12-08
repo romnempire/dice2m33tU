@@ -295,6 +295,7 @@ button:hover {
 .toy {
     max-width: 100px;
     z-index: 2;
+    position: absolute;
 }
 
 #toybox {
@@ -311,12 +312,21 @@ button:hover {
 }
 
 #toybox:hover {
-	-webkit-transition: all .3s ease-in-out;
-	transition: all .3s ease-in-out;
+	-webkit-transition: opacity .3s ease-in-out;
+	transition: opacity .3s ease-in-out;
 	opacity: .95;
 	border-color: #fff;
 }
 
 .grey {
     opacity: 0.4;
+}
+
+#trashcan {
+    position: absolute;
+    bottom:0px;
+    height:20%;
+    width:100%;
+    border: thin solid black;
+    background-color: red;
 }
