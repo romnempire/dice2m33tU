@@ -51,12 +51,13 @@ class Board {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $db->query("INSERT INTO a6_Board (session, background, length, width) VALUES ( " .
 			"\"" . $db->real_escape_string($session) . "\", " .
-			"\"" . $db->real_escape_string($background) . "\", " .
-				  $length   . ", " .
-				  $width    . ")"
+			"\"" . $background   . "\", " .
+				   $length       . ", " .
+				   $width        . ")"
 			);
 		if ($result) {
 			$bid = $db->insert_id;
+
 			return new Board($bid, $session, $background, $length, $width);
 		}
 		return null;
@@ -83,20 +84,16 @@ class Board {
 
 	public static function getAllBoards() {
 		$db = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
-		$result = $db->query("SELECT * FROM a6_Board ORDER BY bid");
+		$result = $db->query("SELECT bid FROM a6_Board ORDER BY bid");
 
-		$boards = array();
-		while($row = mysqli_fetch_array($result)) {
-			$boards[] = new Board(
-				intval($row['bid']),
-				$row['session'],
-				$row['background'],
-				intval($row['length']),
-				intval($row['width'])
-			);
-		}
+		$ids = array();
+        if ($result) {
+            while ($row = $result->fetch_array()) {
+                $ids = intval($row['id']);
+            }
+        }
 
-		return $boards;
+		return $ids;
 	}
 
 	public static function getBySession($session) {
