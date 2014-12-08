@@ -83,24 +83,26 @@ class Chat implements MessageComponentInterface {
     	}
   	}
 
-    //not finished
-    public function rollDice(ConnectionInterface $conn, $msg) {
+    public function rollDice(ConnectionInterface $conn, $msgobj) {
         echo "diceroll \n";
         //generate randoms
+        $rolls = [];
+        for($i = 0;($i < $msgobj->quantity);$i++) {
+            $rolls[] = rand(1,$msgobj->type);
+        }
 
-        //post to database
+        $message = "$msgobj->type: " . implode(" ", $rolls);
 
         //create and send outbound diceroll
         $data = array(
             "cmdType" => "message",
-            "timestamp" => $PHPMessage->getTimestamp(),
-            "text" => $PHPMessage->getText(),
-            "user" => $PHPMessage->getUser()
+            "text" => $message,
+            "user" => $msgobj->user,
+            "session" => $msgobj->session
         );
 
-        foreach ($this->clients as $client) {
-            $client->send(json_encode($data));
-        }
+        //such inefficient
+        $this->processInboundMessage($conn, json_decode(json_encode($data)));
     }
 
     public function processInboundToy($from, $msgobj, $msg) {
@@ -126,7 +128,6 @@ class Chat implements MessageComponentInterface {
         }
     }
 
-    //not finished
     public function processInboundToyLock($from, $msgobj, $msg) {
         echo "toy lock \n";
 
@@ -149,7 +150,6 @@ class Chat implements MessageComponentInterface {
         }
     }
 
-    //not finished
     public function processInboundToyMove($from, $msgobj, $msg) {
         echo "toy move \n";
         //edit in database
