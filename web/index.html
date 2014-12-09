@@ -115,10 +115,12 @@
                         <br><br><br>
 						
 						<button type="button" id="loginbutton"
-                        onclick="login(
-                          document.forms['loginform'].elements['name'].value,
-                          document.forms['loginform'].elements['session'].value
-                        );">Login</button>
+                            onclick="
+                                login(
+                                    document.forms['loginform'].elements['name'].value,
+                                    document.forms['loginform'].elements['session'].value
+                                );
+                                $('#map').unblock();">Login</button>
                     </form>
                 </div>
             </div>
@@ -129,6 +131,7 @@
         <script>window.jQuery || document.write('<script src="public/bower_components/jquery/jquery.min.js"><\/script>')</script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
         <script>window.jQuery.ui || document.write('<script src="public/bower_components/jquery-ui/jquery-ui.min.js"><\/script>')</script>
+        <script src="https://malsup.github.io/jquery.blockUI.js"></script>
 
         <!-- socket.io -->
         <!--<script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>-->

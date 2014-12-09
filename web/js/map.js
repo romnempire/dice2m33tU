@@ -35,7 +35,7 @@ function handleDropEvent( e, ui ) {
 
     if($(this).attr('id') === 'toybox') {
         draggable.css({left: draggable.position().left - $('#toybox').position().left, 
-            top: draggable.position().top - $('#toybox').position().top - $('#toybox > h2').height() - 40});
+            top: draggable.position().top - $('#toybox').position().top});
         $(this).append(draggable);
     } else if ($(this).attr('id') === 'map') {
         draggable.css({left: draggable.position().left + $('#toybox').position().left,
@@ -80,3 +80,9 @@ function handleDragStop( e, ui ) {
 
 $( '#map, #toybox, #trashcan' ).droppable({ accept: ".toy", drop: handleDropEvent });
 $( '#toybox').draggable({containment: 'parent'});
+
+//grey out the map before login
+$.blockUI.defaults.css.cursor = 'default';
+$.blockUI.defaults.css.width = '0px';
+$.blockUI.defaults.overlayCSS.cursor = 'default';
+$( '#map' ).block({ message: null});

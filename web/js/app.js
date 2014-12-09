@@ -50,13 +50,10 @@ function processInboundToyLock(message) {
 
 function processInboundToyMove(message) {
     console.log('moving toy');
-    //it would be a good idea to check if the selected object's class is Toy
     if (message.tid && message.left && message.top) {
         moveImage(message.tid, message.top, message.left);
-        //$('#' + message.tid).css({"left": locationX, "top": locationY});
     } else {
         console.log('Message Format Mismatch: processInboundToyMove');
-        console.log(message);
     }
 };
 

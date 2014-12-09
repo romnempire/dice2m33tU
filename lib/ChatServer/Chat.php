@@ -26,7 +26,7 @@ class Chat implements MessageComponentInterface {
         if ($msgobj->cmdType == 'message') {
             $this->processInboundMessage($from, $msgobj);
         } else if ($msgobj->cmdType == 'backlog') {
-            $this->dumpChatBacklog($from, $msgobj);
+            $this->dumpBacklog($from, $msgobj);
         } else if ($msgobj->cmdType == 'diceroll') {
             $this->rollDice($from, $msgobj);
         } else if ($msgobj->cmdType == 'newtoy') {
@@ -69,19 +69,41 @@ class Chat implements MessageComponentInterface {
         }
     }
 
-	public function dumpChatBacklog(ConnectionInterface $conn, $msgobj) {
-		$session = $msgobj->session;
-		$messages = \orm\Message::findBySession($session);
-    	for ($index = 0; $index < sizeof($messages); $index++) {
-      		$data = array(
-       			"cmdType" => "message",
-        		"timestamp" => $messages[$index]->getTimestamp(),
-        		"text" => $messages[$index]->getText(),
-        		"user" => $messages[$index]->getUser()
-      		);
-      		$conn->send(json_encode($data));
-    	}
-  	}
+    public function dumpBacklog(ConnectionInterface $conn, $msgobj) {
+        $session = $msgobj->session;
+        $messages = \orm\Message::findBySession($session);
+        for ($index = 0; $index < sizeof($messages); $index++) {
+            $data = array(
+                "cmdType" => "message",
+                "timestamp" => $messages[$index]->getTimestamp(),
+                "text" => $messages[$index]->getText(),
+                "user" => $messages[$index]->getUser()
+            );
+            $conn->send(json_encode($data));
+        }
+
+        $toys = \orm\Toy::findBySession($session);
+        for ($index = 0; $index < sizeof($toys); $index++) {
+            $data = array(
+                "cmdType" => "newtoy",
+                "user" => $msgobj->user,
+                "session" => $toys[$index]->getSession(),
+                "url" => $toys[$index]->getURL(),
+                "tid" => $toys[$index]->getID()
+            );
+            $conn->send(json_encode($data));
+
+            $data = array(
+                "cmdType" => "toymove",
+                "user" => $msgobj->user,
+                "session" => $toys[$index]->getSession(),
+                "tid" => $toys[$index]->getID(),
+                "top" => $toys[$index]->getLocation()[1],
+                "left" => $toys[$index]->getLocation()[0]
+            );
+            $conn->send(json_encode($data));
+        }
+    }
 
     public function rollDice(ConnectionInterface $conn, $msgobj) {
         echo "diceroll \n";
@@ -145,6 +167,7 @@ class Chat implements MessageComponentInterface {
 
         foreach ($this->clients as $client) {
             if ($from !== $client) {
+
                 $client->send($msg);
             }
         }
@@ -155,8 +178,12 @@ class Chat implements MessageComponentInterface {
         //edit in database
 
         $toy = \orm\Toy::findByID($msgobj->tid);
+        //super hacky intval casts >.>
+        $toy->setLocation(intval($msgobj->left), intval($msgobj->top));
 
         //create and send outbound toy move
+        //you don't actually use this because it literally recreates your input
+        //it just tests the orm
         $data = array(
             "cmdType" => "toymove",
             "user" => $msgobj->user,
