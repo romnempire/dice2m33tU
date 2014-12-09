@@ -1,10 +1,7 @@
-$("#dicemenu").hide();
-$("#d1").hide();
-$("#d2").hide();
-$("#d3").hide();
-$("#d4").hide();
-$("#d5").hide();
-$("#d6").hide();
+function hideDice(){
+    $("#d1, #d2, #d3, #d4, #d5, #d6, #dicemenu").hide();
+};
+hideDice();
 
 $(document).ready(
 	function(){
@@ -61,7 +58,7 @@ $(document).ready(
 		});
 		
 		$("#close").click( function () {
-			$("#d1, #d2, #d3, #d4, #d5, #d6, #dicemenu").hide();
+            hideDice();
 		});
 	}
 )
