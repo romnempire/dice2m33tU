@@ -80,3 +80,9 @@ function handleDragStop( e, ui ) {
 
 $( '#map, #toybox, #trashcan' ).droppable({ accept: ".toy", drop: handleDropEvent });
 $( '#toybox').draggable({containment: 'parent'});
+
+//grey out the map before login
+$.blockUI.defaults.css.cursor = 'default';
+$.blockUI.defaults.css.width = '0px';
+$.blockUI.defaults.overlayCSS.cursor = 'default';
+$( '#map' ).block({ message: null});
