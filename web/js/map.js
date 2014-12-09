@@ -35,7 +35,7 @@ function handleDropEvent( e, ui ) {
 
     if($(this).attr('id') === 'toybox') {
         draggable.css({left: draggable.position().left - $('#toybox').position().left, 
-            top: draggable.position().top - $('#toybox').position().top - $('#toybox > h2').height() - 40});
+            top: draggable.position().top - $('#toybox').position().top});
         $(this).append(draggable);
     } else if ($(this).attr('id') === 'map') {
         draggable.css({left: draggable.position().left + $('#toybox').position().left,
