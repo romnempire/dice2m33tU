@@ -64,15 +64,14 @@
                 </div>
 
                 <div class="input-group" id="chatinput">
-                  <form name="messageform">
-                    <input id="blast" type="text" class="form-control" placeholder="send something to everyone" name="chatinput">
-                    <span class="input-group-btn">
-                        <button id="send" type="button" onclick="processOutboundMessage(
-                            messageform.blast.value,
-                            Date.now()
-                        );">Send</button>
-                    </span>
-                  </form>
+                    <form name="messageform" onsubmit="return (function(){
+                        processOutboundMessage( messageform.blast.value, Date.now() );
+                        return false;})()">
+                        <input id="blast" type="text" class="form-control" placeholder="send something to everyone" name="chatinput">
+                        <span class="input-group-btn">
+                            <button id="send" type="submit">Send</button>
+                        </span>
+                    </form>
                 </div>
                 <div id="login">
                     <form id="loginform">
