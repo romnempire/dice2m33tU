@@ -49,28 +49,6 @@ button:hover {
 	color: #999;
 }
 
-#statscontainer {
-	top: 57%;
-	right: 0%;
-	position: absolute;
-	width: 25%;
-	height: 25%;
-	overflow: hidden;
-}
-
-#statshide {
-	height: 100%;
-	width: 100%;
-	opacity: 1.0;
-}
-
-#stats {
-	height: 100%;
-	width: 100%;
-	background: #666;
-	opacity: .85;
-}
-
 #title {
 	font: 60px Arial;
 	color: #000;
@@ -151,51 +129,43 @@ button:hover {
     -webkit-animation: diceHover 2s infinite linear;
 }
 
-#empty {
+#d1 {left: 10%;}
+#d2 {left: 18%;}
+#d3 {left: 26%;}	
+#d4 {left: 34%;}
+#d5 {left: 42%;}
+#d6 {left: 50%;}
+
+.dicebox {
+	top: 10%;
+	height: 89%;
+	width: 73px;
+	overflow: auto;
+	text-align: center;
+	position: absolute;
+	border: 1px solid black;
+	background: #666;
+}	
+
+#dboxcontainer{
+	left: 10%;
+	width: 64%;
+	position: absolute;
+}
+
+#dicemenu{
 	bottom: 1%;
 	left: 10%;
 	width: 64%;
 	height: 70px;
  	overflow: hidden;         
 	position: absolute;
+	background: #666;
 	z-index: 2;
 }
 
-#hide {
-	width: 100%;
-	height: 100%;
-	opacity: 1.0;
-	overflow: hidden;
-}
-
-#appear {                  /*  need overflow for smaller screens.. can it overflow up? or have container set taller, hide set taller, and this one set to bottom  */
-	width: 100%;
-	height: 100%;
-	background: #666;
-	overflow: hidden;
-}
-
-#d1 {
-	top: 10%;
-	left: 10%;
-	height: 89%;
-	width: 60px;
-	overflow: hidden;
-	position: absolute;
-}
-
-#d1hide {
-	width: 100%;
-	height: 100%;
-	opacity: 1.0;
-}
-
-#d1show {
-	width: 100%;
-	height:100%;
-	border: 1px solid black;
-	background: #666;
-
+#right {
+	float: right;
 }
 
 @-webkit-keyframes diceHover {

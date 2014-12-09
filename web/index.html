@@ -26,36 +26,70 @@
                 </div>
                 <div id="toybox"><h2>toybox</h2>
                     <div id="trashcan"></div>
-
                 </div>
-                <div id="dice">
-                	<a href="#show">
-                    	<img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px">
-                    </a>
-                </div>
-                <div id="empty">
-                	<a name="close">
-						<div id="hide"></div>
-					</a>
-					<a name="show"></a>
-					<div id="appear">
-						<a name="show"></a>
-						<a href="#d1s"><img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px"></a><a href="#close">(close)</a>
-					</div>
-				</div>
-				<div id="d1">
-					<a name="d1close"><div id="d1hide"></div></a>
-					<a name="d1s">
-						<div id="d1show"><img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px"><br><br><a href="#d1close">
-								(close)</a>
+				
+				<div id="dice">
+							<img src="http://i58.tinypic.com/242eqmf.png" width="60px" height="65px">
 						</div>
-					</a>
-				</div>
+						
+						<div id="dicemenu">
+							<img src="http://i62.tinypic.com/148ekxv.png" height="60px" width="73px" id="d1click">
+							<img src="http://i62.tinypic.com/347ic8x.png" height="60px" width="73px" id="d2click">
+							<img src="http://i58.tinypic.com/205falf.png" height="60px" width="73px" id="d3click">
+							<img src="http://i62.tinypic.com/fkp8nb.png" height="60px" width="73px" id="d4click">
+							<img src="http://i60.tinypic.com/2hdmbvc.png" height="60px" width="73px" id="d5click">
+							<img src="http://i60.tinypic.com/142u1sm.png" height="60px" width="73px" id="d6click">
+							<div id="right"><img src="http://i62.tinypic.com/efpa4p.png" id="close"></div>
+						</div>
+					
+						
+							<div class="dicebox" id="d1"> 	<div id="right"><img src="http://i62.tinypic.com/efpa4p.png" id="closed1"></div>
+															<h1>dice 1</h1>
+															<img src="http://i62.tinypic.com/148ekxv.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/148ekxv.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/148ekxv.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/148ekxv.png" height="40px" width="49px">
+															</div>
+							<div class="dicebox" id="d2">	<div id="right"><img src="http://i62.tinypic.com/efpa4p.png" id="closed2"></div>
+															<h1>dice 2</h1>
+															<img src="http://i62.tinypic.com/347ic8x.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/347ic8x.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/347ic8x.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/347ic8x.png" height="40px" width="49px">
+															</div>
+							<div class="dicebox" id="d3">	<div id="right"><img src="http://i62.tinypic.com/efpa4p.png" id="closed3"></div>
+															<h1>dice 3</h1>
+															<img src="http://i58.tinypic.com/205falf.png" height="40px" width="49px">
+															<img src="http://i58.tinypic.com/205falf.png" height="40px" width="49px">
+															<img src="http://i58.tinypic.com/205falf.png" height="40px" width="49px">
+															<img src="http://i58.tinypic.com/205falf.png" height="40px" width="49px">
+															</div>
+							<div class="dicebox" id="d4">	<div id="right"><img src="http://i62.tinypic.com/efpa4p.png" id="closed4"></div>
+															<h1>dice 4</h1>
+															<img src="http://i62.tinypic.com/fkp8nb.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/fkp8nb.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/fkp8nb.png" height="40px" width="49px">
+															<img src="http://i62.tinypic.com/fkp8nb.png" height="40px" width="49px">
+															</div>
+							<div class="dicebox" id="d5">	<div id="right"><img src="http://i62.tinypic.com/efpa4p.png" id="closed5"></div>
+															<h1>dice 5</h1>
+															<img src="http://i60.tinypic.com/2hdmbvc.png" height="40px" width="49px">
+															<img src="http://i60.tinypic.com/2hdmbvc.png" height="40px" width="49px">
+															<img src="http://i60.tinypic.com/2hdmbvc.png" height="40px" width="49px">
+															<img src="http://i60.tinypic.com/2hdmbvc.png" height="40px" width="49px">
+															</div>
+							<div class="dicebox" id="d6">	<div id="right"><img src="http://i62.tinypic.com/efpa4p.png" id="closed6"></div>
+															<h1>div box 6</h1>
+															<img src="http://i60.tinypic.com/142u1sm.png" height="40px" width="49px">
+															<img src="http://i60.tinypic.com/142u1sm.png" height="40px" width="49px">
+															<img src="http://i60.tinypic.com/142u1sm.png" height="40px" width="49px">
+															<img src="http://i60.tinypic.com/142u1sm.png" height="40px" width="49px">
+															</div>
 
                 <div id="options">
                     <button type="button" onclick="createURLChooser(this)">Add Toy</button>
                     <button type="button" onclick="$('.griddy').toggle();return false;">Grid</button>
-                    <button type="button" ondrop="drop(event)" ondragover="allowDrop(event)">Trashcan</button>
+                    <button type="button" ondrop="drop(event)" onClick="alert('Wanted 3 buttons!')">Sarah</button>
                 </div>
             </div>
 
@@ -105,6 +139,7 @@
         <script src="js/app.js"></script>
         <script src="js/map.js"></script>
         <script src="js/griddy.js"></script>
+		<script src="js/dice.js"></script>
         <!--<script src="js/concat.min.js"></script>-->
     </body>
 </html>
