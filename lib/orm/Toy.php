@@ -121,7 +121,7 @@ class Toy {
 	}
 
 	public static function findBySession($session) {
-		$mysqli = new mysqli("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
+		$mysqli = mysqli_connect("classroom.cs.unc.edu", "serust", "CH@ngemenow99Please!serust", "serustdb");
 		$result = $mysqli->query("SELECT * FROM a6_Toy WHERE session = \"" . $session . "\"");
 
         $toys = array();
